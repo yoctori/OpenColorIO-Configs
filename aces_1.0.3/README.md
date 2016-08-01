@@ -187,7 +187,7 @@ The standard *OCIO* roles are defined. They role assignments are:
 
 - **color_picking**: Output - Rec.709
 - **color_timing**: ACEScc
-- **compositing_log**: ACEScct
+- **compositing_log**: ADX10
 - **data**: Raw
 - **default**: ACES2065-1
 - **matte_paint**: ACEScc
