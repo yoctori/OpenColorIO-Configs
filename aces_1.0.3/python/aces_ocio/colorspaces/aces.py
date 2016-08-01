@@ -151,17 +151,19 @@ def create_ACEScc(aces_ctl_directory,
     cs.is_data = False
     cs.allocation_type = ocio.Constants.ALLOCATION_UNIFORM
     cs.allocation_vars = [min_value, max_value]
-    cs.aces_transform_id = 'ACEScsc.ACEScc_to_ACES.a1.0.1'
+    cs.aces_transform_id = 'ACEScsc.ACEScc_to_ACES'
 
     ctls = [os.path.join(aces_ctl_directory,
+                         'csc',
                          'ACEScc',
-                         'ACEScsc.ACEScc_to_ACES.a1.0.1.ctl'),
+                         'ACEScsc.ACEScc_to_ACES.ctl'),
             # This transform gets back to the *AP1* primaries.
             # Useful as the 1d LUT is only covering the transfer function.
             # The primaries switch is covered by the matrix below:
             os.path.join(aces_ctl_directory,
+                         'csc',
                          'ACEScg',
-                         'ACEScsc.ACES_to_ACEScg.a1.0.1.ctl')]
+                         'ACEScsc.ACES_to_ACEScg.ctl')]
     lut = '%s_to_linear.spi1d' % name
 
     lut = sanitize(lut)
@@ -196,6 +198,96 @@ def create_ACEScc(aces_ctl_directory,
     cs.from_reference_transforms = []
     return cs
 
+def create_ACEScct(aces_ctl_directory,
+                   lut_directory,
+                   lut_resolution_1d,
+                   cleanup,
+                   name='ACEScct',
+                   min_value=0,
+                   max_value=1,
+                   input_scale=1):
+    """
+    Creates the *ACEScct* reference color space
+
+    Parameters
+    ----------
+    aces_ctl_directory : str or unicode
+        The path to the aces 'transforms/ctl/utilities'
+    lut_directory : str or unicode 
+        The directory to use when generating LUTs
+    lut_resolution_1d : int
+        The resolution of generated 1D LUTs
+    cleanup : bool
+        Whether or not to clean up the intermediate images 
+    name : str or unicode, optional
+        The name of the ColorSpace
+    min_value : float, optional
+        The minimum value to consider for the space
+    max_value : float, optional
+        The maximum value to consider for the space
+    input_scale : float, optional
+        A scale factor to divide input values
+
+    Returns
+    -------
+    ColorSpace
+         *ACEScc* and all its identifying information
+    """
+
+    cs = ColorSpace(name)
+    cs.description = 'The %s color space' % name
+    cs.aliases = ['acescct', 'acescct_ap1']
+    cs.equality_group = ''
+    cs.family = 'ACES'
+    cs.is_data = False
+    cs.allocation_type = ocio.Constants.ALLOCATION_UNIFORM
+    cs.allocation_vars = [min_value, max_value]
+    cs.aces_transform_id = 'ACEScsc.ACEScct_to_ACES'
+
+    ctls = [os.path.join(aces_ctl_directory,
+                         'csc',
+                         'ACEScct',
+                         'ACEScsc.ACEScct_to_ACES.ctl'),
+            # This transform gets back to the *AP1* primaries.
+            # Useful as the 1d LUT is only covering the transfer function.
+            # The primaries switch is covered by the matrix below:
+            os.path.join(aces_ctl_directory,
+                         'csc',
+                         'ACEScg',
+                         'ACEScsc.ACES_to_ACEScg.ctl')]
+    lut = '%s_to_linear.spi1d' % name
+
+    lut = sanitize(lut)
+
+    generate_1d_LUT_from_CTL(
+        os.path.join(lut_directory, lut),
+        ctls,
+        lut_resolution_1d,
+        'float',
+        input_scale,
+        1,
+        {},
+        cleanup,
+        aces_ctl_directory,
+        min_value,
+        max_value,
+        1)
+
+    cs.to_reference_transforms = []
+    cs.to_reference_transforms.append({
+        'type': 'lutFile',
+        'path': lut,
+        'interpolation': 'linear',
+        'direction': 'forward'})
+
+    # *AP1* primaries to *AP0* primaries
+    cs.to_reference_transforms.append({
+        'type': 'matrix',
+        'matrix': mat44_from_mat33(ACES_AP1_TO_AP0),
+        'direction': 'forward'})
+
+    cs.from_reference_transforms = []
+    return cs
 
 def create_ACESproxy(aces_ctl_directory,
                      lut_directory,
@@ -231,17 +323,19 @@ def create_ACESproxy(aces_ctl_directory,
     cs.family = 'ACES'
     cs.is_data = False
 
-    cs.aces_transform_id = 'ACEScsc.ACESproxy10i_to_ACES.a1.0.1'
+    cs.aces_transform_id = 'ACEScsc.ACESproxy10i_to_ACES'
 
     ctls = [os.path.join(aces_ctl_directory,
+                         'csc',
                          'ACESproxy',
-                         'ACEScsc.ACESproxy10i_to_ACES.a1.0.1.ctl'),
+                         'ACEScsc.ACESproxy10i_to_ACES.ctl'),
             # This transform gets back to the *AP1* primaries.
             # Useful as the 1d LUT is only covering the transfer function.
             # The primaries switch is covered by the matrix below:
             os.path.join(aces_ctl_directory,
+                         'csc',
                          'ACEScg',
-                         'ACEScsc.ACES_to_ACEScg.a1.0.1.ctl')]
+                         'ACEScsc.ACES_to_ACEScg.ctl')]
     lut = '%s_to_linear.spi1d' % name
 
     lut = sanitize(lut)
@@ -305,7 +399,7 @@ def create_ACEScg():
     cs.allocation_type = ocio.Constants.ALLOCATION_LG2
     cs.allocation_vars = [-8, 5, 0.00390625]
 
-    cs.aces_transform_id = 'ACEScsc.ACEScg_to_ACES.a1.0.1'
+    cs.aces_transform_id = 'ACEScsc.ACEScg_to_ACES'
 
     cs.to_reference_transforms = []
 
@@ -363,7 +457,7 @@ def create_ADX(lut_directory,
     cs.is_data = False
 
     if bit_depth == 10:
-        cs.aces_transform_id = 'ACEScsc.ADX10_to_ACES.a1.0.1'
+        cs.aces_transform_id = 'ACEScsc.ADX10_to_ACES'
 
         cs.bit_depth = ocio.Constants.BIT_DEPTH_UINT10
         ADX_to_CDD = [1023 / 500, 0, 0, 0,
@@ -372,7 +466,7 @@ def create_ADX(lut_directory,
                       0, 0, 0, 1]
         offset = [-95 / 500, -95 / 500, -95 / 500, 0]
     elif bit_depth == 16:
-        cs.aces_transform_id = 'ACEScsc.ADX16_to_ACES.a1.0.1'
+        cs.aces_transform_id = 'ACEScsc.ADX16_to_ACES'
 
         cs.bit_depth = ocio.Constants.BIT_DEPTH_UINT16
         ADX_to_CDD = [65535 / 8000, 0, 0, 0,
@@ -556,7 +650,7 @@ def create_generic_log(aces_ctl_directory,
     ctls = [os.path.join(
         aces_ctl_directory,
         'utilities',
-        'ACESlib.Log2_to_Lin_param.a1.0.1.ctl')]
+        'ACESutil.Log2_to_Lin_param.ctl')]
     lut = '%s_to_linear.spi1d' % name
 
     lut = sanitize(lut)
@@ -643,7 +737,7 @@ def create_Dolby_PQ(aces_ctl_directory,
     ctls = [os.path.join(
         aces_ctl_directory,
         'utilities',
-        'ACESlib.DolbyPQ_to_Lin.a1.0.1.ctl')]
+        'ACESutil.DolbyPQ_to_Lin.ctl')]
     lut = '%s_to_linear.spi1d' % name
 
     lut = sanitize(lut)
@@ -738,7 +832,7 @@ def create_Dolby_PQ_shaper(aces_ctl_directory,
     ctls = [os.path.join(
         aces_ctl_directory,
         'utilities',
-        'ACESlib.OCIOshaper_to_Lin_param.a1.0.1.ctl')]
+        'ACESutil.OCIOshaper_to_Lin_param.ctl')]
     lut = '%s_to_linear.spi1d' % name
 
     lut = sanitize(lut)
@@ -975,10 +1069,10 @@ def create_LMTs(aces_ctl_directory,
         lmt_shaper_name,
         os.path.join('%s',
                      'utilities',
-                     'ACESlib.Log2_to_Lin_param.a1.0.1.ctl'),
+                     'ACESutil.Log2_to_Lin_param.ctl'),
         os.path.join('%s',
                      'utilities',
-                     'ACESlib.Lin_to_Log2_param.a1.0.1.ctl'),
+                     'ACESutil.Lin_to_Log2_param.ctl'),
         shaper_input_scale_generic_log2,
         lmt_params]
 
@@ -1097,11 +1191,11 @@ def create_ACES_RRT_plus_ODT(odt_name,
             shaper_to_aces_ctl % aces_ctl_directory,
             os.path.join(aces_ctl_directory,
                          'rrt',
-                         'RRT.a1.0.1.ctl'),
+                         'RRT.ctl'),
             os.path.join(aces_ctl_directory,
                          'odt',
                          odt_values['transformCTL'])]
-        lut = '%s.RRT.a1.0.1.%s.spi3d' % (shaper_name, odt_name)
+        lut = '%s.RRT.%s.spi3d' % (shaper_name, odt_name)
 
         lut = sanitize(lut)
 
@@ -1147,9 +1241,9 @@ def create_ACES_RRT_plus_ODT(odt_name,
                              odt_values['transformCTLInverse']),
                 os.path.join(aces_ctl_directory,
                              'rrt',
-                             'InvRRT.a1.0.1.ctl'),
+                             'InvRRT.ctl'),
                 shaper_from_aces_ctl % aces_ctl_directory]
-        lut = 'InvRRT.a1.0.1.%s.%s.spi3d' % (odt_name, shaper_name)
+        lut = 'InvRRT.%s.%s.spi3d' % (odt_name, shaper_name)
 
         lut = sanitize(lut)
 
@@ -1248,10 +1342,10 @@ def create_shapers_log2(aces_ctl_directory,
         log2_shaper_name,
         os.path.join('%s',
                      'utilities',
-                     'ACESlib.Log2_to_Lin_param.a1.0.1.ctl'),
+                     'ACESutil.Log2_to_Lin_param.ctl'),
         os.path.join('%s',
                      'utilities',
-                     'ACESlib.Lin_to_Log2_param.a1.0.1.ctl'),
+                     'ACESutil.Lin_to_Log2_param.ctl'),
         shaper_input_scale_generic_log2,
         log2_params]
 
@@ -1350,10 +1444,10 @@ def create_shapers_dolbypq(aces_ctl_directory,
         dolby_pq_shaper_name,
         os.path.join('%s',
                      'utilities',
-                     'ACESlib.OCIOshaper_to_Lin_param.a1.0.1.ctl'),
+                     'ACESutil.OCIOshaper_to_Lin_param.ctl'),
         os.path.join('%s',
                      'utilities',
-                     'ACESlib.Lin_to_OCIOshaper_param.a1.0.1.ctl'),
+                     'ACESutil.Lin_to_OCIOshaper_param.ctl'),
         1.0,
         dolby_pq_params]
 
@@ -1492,10 +1586,10 @@ def create_shapers(aces_ctl_directory,
         dolby_pq_shaper_name,
         os.path.join('%s',
                      'utilities',
-                     'ACESlib.DolbyPQ_to_Lin.a1.0.1.ctl'),
+                     'ACESutil.DolbyPQ_to_Lin.ctl'),
         os.path.join('%s',
                      'utilities',
-                     'ACESlib.Lin_to_DolbyPQ.a1.0.1.ctl'),
+                     'ACESutil.Lin_to_DolbyPQ.ctl'),
         1.0,
         {}]
 
@@ -1939,6 +2033,11 @@ def create_colorspaces(aces_ctl_directory,
                            min_value=-0.35840, max_value=1.468)
     colorspaces.append(ACEScc)
 
+    ACEScct = create_ACEScct(aces_ctl_directory, lut_directory,
+                           lut_resolution_1d, cleanup,
+                           min_value=-0.35840, max_value=1.468)
+    colorspaces.append(ACEScct)
+
     ACESproxy = create_ACESproxy(aces_ctl_directory, lut_directory,
                                  lut_resolution_1d, cleanup)
     colorspaces.append(ACESproxy)
@@ -1972,12 +2071,12 @@ def create_colorspaces(aces_ctl_directory,
     colorspaces.extend(odts)
 
     # TODO: Investigate if there is a way to retrieve these values from *CTL*.
-    default_display = 'sRGB (D60 sim.)'
+    default_display = 'sRGB'
     color_picking = 'Rec.709'
 
     roles = {'color_picking': color_picking,
              'color_timing': ACEScc.name,
-             'compositing_log': ACEScc.name,
+             'compositing_log': ADX10.name,
              'data': '',
              'default': ACES.name,
              'matte_paint': ACEScc.name,
