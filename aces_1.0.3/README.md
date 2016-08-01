@@ -43,6 +43,7 @@ Transforms generated based on the [ACES CTL Transforms](https://github.com/ampas
 
 ##### Colorspaces
 
+- sRGB
 - sRGB (D60 sim.)
 - Rec.709
 - Rec.709 (D60 sim.)
@@ -106,7 +107,6 @@ Colorspaces and transforms representing the ACES ADX spaces used for film scanni
 
 #### Canon
 - [Canon ACES landing page](http://usa.canon.com/cusa/professional/standard_display/aces)
-- [Clog white paper](http://learn.usa.canon.com/app/pdfs/white_papers/White_Paper_Clog_optoelectronic.pdf)
 - [Clog white paper](http://learn.usa.canon.com/app/pdfs/white_papers/White_Paper_Clog_optoelectronic.pdf)
 
 - [C500 Drivers and Software](http://www.usa.canon.com/cusa/professional/products/professional_cameras/cinema_eos_cameras/eos_c500#DriversAndSoftware)
