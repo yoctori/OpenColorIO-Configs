@@ -672,6 +672,9 @@ def create_colorspaces(lut_directory,
         aliases=['lin_adobewidegamutrgb'])
     colorspaces.append(cs)
 
+    # Alphabetize the color spaces, based on name
+    colorspaces = sorted(colorspaces, key=lambda e: e.name)
+
     return colorspaces
 
 

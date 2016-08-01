@@ -359,7 +359,7 @@ def create_ADX(lut_directory,
     cs.description = '%s color space - used for film scans' % name
     cs.aliases = ['adx%s' % str(bit_depth)]
     cs.equality_group = ''
-    cs.family = 'ADX'
+    cs.family = 'Input/ADX'
     cs.is_data = False
 
     if bit_depth == 10:
@@ -816,7 +816,7 @@ def create_ACES_LMT(lmt_name,
     cs.description = 'The ACES Look Transform: %s' % lmt_name
     cs.aliases = aliases
     cs.equality_group = ''
-    cs.family = 'Look'
+    cs.family = 'Utility/Look'
     cs.is_data = False
     cs.allocation_type = ocio.Constants.ALLOCATION_LG2
     cs.allocation_vars = [-8, 5, 0.00390625]

@@ -858,7 +858,8 @@ def create_config(config_data,
                 (reference_data, role_colorspace, [role_name_alias1]))
 
                 add_colorspace_aliases(
-                config, reference_data, role_colorspace, [role_name_alias2], 'Roles')
+                    config, reference_data, role_colorspace, [role_name_alias2], 
+                    'Utility/Roles')
 
     else:
         set_config_roles(
@@ -900,7 +901,8 @@ def create_config(config_data,
                 (reference_data, role_colorspace, [role_name_alias1]))
 
                 add_colorspace_aliases(
-                config, reference_data, role_colorspace, [role_name_alias2], 'Roles')
+                    config, reference_data, role_colorspace, [role_name_alias2], 
+                    'Utility/Roles')
 
     print('')
 
@@ -912,7 +914,8 @@ def create_config(config_data,
     # using the configuration order.
     print('Adding the alias colorspaces')
     for reference, colorspace, aliases in alias_colorspaces:
-        add_colorspace_aliases(config, reference, colorspace, aliases)
+        add_colorspace_aliases(config, reference, colorspace, aliases, 
+            'Utility/Aliases')
 
     print('')
 
