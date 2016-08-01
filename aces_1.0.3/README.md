@@ -27,47 +27,13 @@ For ease of use across a broader number of applications, the family name of each
 
 - ACES2065-1
 - ACEScc
+- ACEScct
 - ACESproxy
 - ACEScg
 
 ##### Description
 
 Colorspaces and transforms representing the core ACES working and interchange colorspaces.
-
-##### Technical information
-
-Transforms generated based on the [ACES CTL Transforms](https://github.com/ampas/aces-dev/tree/v1.0.3/transforms/ctl)
-
-### ADX
-
-##### Colorspaces
-
-- ADX10
-- ADX16
-
-##### Description
-
-Colorspaces and transforms representing the ACES ADX spaces used for film scanning and printing.
-
-##### Technical information
-
-- Transforms generated based on the [ACES CTL Transforms](https://github.com/ampas/aces-dev/tree/v1.0.3/transforms/ctl)
-- [Alex Fry's ACES 0.7.1 OCIO config](https://github.com/imageworks/OpenColorIO-Configs/tree/master/aces_0.7.1) was also a valuable resource.
-
-### Look
-
-##### Colorspaces
-
-- ACES 1.0 to 0.1 emulation
-- ACES 1.0 to 0.2 emulation
-- ACES 1.0 to 0.7 emulation
-
-##### Description
-
-Colorspaces and transforms emulating the look of the ACES 0.1, 0.2 and 0.7 release.
-
-- Should be applied to data in the ACES2065-1 colorspace.
-- Should be used before an ACES Output Transform.
 
 ##### Technical information
 
@@ -118,6 +84,22 @@ References and descriptions are provided for each group of Input Transforms belo
 - The colorspaces that start with 'Linear - ' will convert to or from a specific gamut but not apply a transfer function.
 - The colorspaces that start with 'Curve - ' will apply a transfer function but not convert between gamuts.
 
+#### ADX
+
+##### Colorspaces
+
+- ADX10
+- ADX16
+
+##### Description
+
+Colorspaces and transforms representing the ACES ADX spaces used for film scanning and printing.
+
+##### Technical information
+
+- Transforms generated based on the [ACES CTL Transforms](https://github.com/ampas/aces-dev/tree/v1.0.3/transforms/ctl)
+- [Alex Fry's ACES 0.7.1 OCIO config](https://github.com/imageworks/OpenColorIO-Configs/tree/master/aces_0.7.1) was also a valuable resource.
+
 #### ARRI
 - [ARRI Input Transforms](https://github.com/ampas/aces-dev/tree/v1.0.3/transforms/ctl/idt/vendorSupplied/arri/alexa)
 - Conversations with Joseph Goldstone of ARRI
@@ -164,13 +146,32 @@ A collection of colorspaces that are used to facilitate the creation of LUTs and
 - The colorspaces starting with 'Linear - ' will convert to or from a specific gamut but not apply a transfer function.
 - The colorspaces starting with 'Curve - ' will apply a transfer function but not convert between gamuts.
 
-### Roles
+#### Look
+
+##### Colorspaces
+
+- ACES 1.0 to 0.1 emulation
+- ACES 1.0 to 0.2 emulation
+- ACES 1.0 to 0.7 emulation
+
+##### Description
+
+Colorspaces and transforms emulating the look of the ACES 0.1, 0.2 and 0.7 release.
+
+- Should be applied to data in the ACES2065-1 colorspace.
+- Should be used before an ACES Output Transform.
+
+##### Technical information
+
+Transforms generated based on the [ACES CTL Transforms](https://github.com/ampas/aces-dev/tree/v1.0.3/transforms/ctl)
+
+#### Roles
 
 ##### Description
 
 The role colorspaces are aliases to the colorspaces used for the *OCIO* 'roles' functionality.
 
-### Aliases
+#### Aliases
 
 ##### Description
 
@@ -186,7 +187,7 @@ The standard *OCIO* roles are defined. They role assignments are:
 
 - **color_picking**: Output - Rec.709
 - **color_timing**: ACEScc
-- **compositing_log**: ACEScc
+- **compositing_log**: ACEScct
 - **data**: Raw
 - **default**: ACES2065-1
 - **matte_paint**: ACEScc
@@ -205,6 +206,7 @@ Displays and Views
 
 The default config has one Display named **ACES**, which contains the following Views / colorspaces:
 
+- sRGB, colorspace: sRGB
 - sRGB D60 sim., colorspace: sRGB (D60 sim.)
 - DCDM, colorspace: DCDM
 - DCDM P3 gamut clip, colorspace: DCDM (P3 gamut clip)
