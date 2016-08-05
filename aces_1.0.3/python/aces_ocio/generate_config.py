@@ -1318,7 +1318,7 @@ def generate_baked_LUTs(odt_info,
             odt_shaper = shaper_name
 
         # *Photoshop*
-        for input_space in ['ACEScc', 'ACESproxy']:
+        for input_space in ['ACEScc', 'ACESproxy', 'ACEScct']:
             args = ['--iconfig', config_path,
                     '-v']
             if prefix:
@@ -1351,7 +1351,7 @@ def generate_baked_LUTs(odt_info,
             bake_lut.execute()
 
         # *Flame*, *Lustre*
-        for input_space in ['ACEScc', 'ACESproxy']:
+        for input_space in ['ACEScc', 'ACESproxy', 'ACEScct']:
             args = ['--iconfig', config_path,
                     '-v']
             if prefix:
