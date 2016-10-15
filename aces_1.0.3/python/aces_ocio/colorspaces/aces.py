@@ -40,6 +40,7 @@ __all__ = ['ACES_AP1_TO_AP0',
            'ACES_XYZ_TO_AP0',
            'create_ACES',
            'create_ACEScc',
+           'create_ACEScct',
            'create_ACESproxy',
            'create_ACEScg',
            'create_ADX',
@@ -247,7 +248,17 @@ def create_ACEScct(aces_ctl_directory,
     ctls = [os.path.join(aces_ctl_directory,
                          'csc',
                          'ACEScct',
-                         'ACEScsc.ACEScct_to_ACES.ctl'),
+                         'ACEScsc.ACEScct_to_ACES.ctl')]
+    '''
+    Removing the ACES to ACEScg transform for ACEScct only.
+    Including this transform allows us to isolate the ACEScct transfer 
+    function from the change of gamut (AP1 to AP0) in the ACEScct to
+    ACES transform. The ACES to ACEScg transform clips values below 0
+    though. Since the ACEScct transfer function maps some values in the
+    normalized 0 to 1 range below 0, the clip in the ACES to ACEScg
+    transform is an issue when concatenated with the ACEScct to ACES
+    transform.
+
             # This transform gets back to the *AP1* primaries.
             # Useful as the 1d LUT is only covering the transfer function.
             # The primaries switch is covered by the matrix below:
@@ -255,6 +266,7 @@ def create_ACEScct(aces_ctl_directory,
                          'csc',
                          'ACEScg',
                          'ACEScsc.ACES_to_ACEScg.ctl')]
+    '''
     lut = '%s_to_linear.spi1d' % name
 
     lut = sanitize(lut)
@@ -2035,7 +2047,7 @@ def create_colorspaces(aces_ctl_directory,
 
     ACEScct = create_ACEScct(aces_ctl_directory, lut_directory,
                            lut_resolution_1d, cleanup,
-                           min_value=-0.35840, max_value=1.468)
+                           min_value=-0.24913611, max_value=1.468)
     colorspaces.append(ACEScct)
 
     ACESproxy = create_ACESproxy(aces_ctl_directory, lut_directory,
