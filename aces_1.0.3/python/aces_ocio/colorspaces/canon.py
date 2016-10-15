@@ -100,6 +100,38 @@ def create_c_log(gamut,
 
         return linear
 
+    def c_log3_to_linear(code_value):
+        '''
+        if(clog3_ire < 0.04076162)
+            out = -( pow( 10, ( 0.07623209 - clog3_ire ) / 0.42889912 ) - 1 ) / 14.98325;
+        else if(clog3_ire <= 0.105357102)
+            out = ( clog3_ire - 0.073059361 ) / 2.3069815;
+        else
+            out = ( pow( 10, ( clog3_ire - 0.069886632 ) / 0.42889912 ) - 1 ) / 14.98325;
+        '''
+        c1 = 0.42889912
+        c2 = 14.98325
+        c3 = 0.069886632
+
+        c4 = 0.04076162
+        c5 = 0.07623209
+
+        c6 = 0.105357102
+        c7 = 0.073059361
+        c8 = 2.3069815
+
+        clog3_ire = legal_to_full(code_value)
+
+        if clog3_ire < c4:
+            linear = -(pow(10, ( c5 - clog3_ire ) / c1) - 1) / c2
+        elif clog3_ire <= c6:
+            linear = (clog3_ire - c7) / c8
+        else:
+            linear = (pow(10, (clog3_ire - c3) / c1) - 1) / c2
+        linear *= 0.9
+
+        return linear
+
     cs.to_reference_transforms = []
 
     if transfer_function:
@@ -111,6 +143,10 @@ def create_c_log(gamut,
             data = array.array('f', '\0' * lut_resolution_1d * 4)
             for c in range(lut_resolution_1d):
                 data[c] = c_log2_to_linear(1023 * c / (lut_resolution_1d - 1))
+        elif transfer_function == 'Canon-Log3':
+            data = array.array('f', '\0' * lut_resolution_1d * 4)
+            for c in range(lut_resolution_1d):
+                data[c] = c_log3_to_linear(1023 * c / (lut_resolution_1d - 1))
 
         lut = '%s_to_linear.spi1d' % transfer_function
         genlut.write_SPI_1d(
@@ -312,6 +348,38 @@ def create_colorspaces(lut_directory, lut_resolution_1d):
         ['canonlog2_cgamuttung'])
     colorspaces.append(c_log_25)
 
+    c_log_32 = create_c_log(
+        'Rec. 2020 Daylight',
+        'Canon-Log3',
+        lut_directory,
+        lut_resolution_1d,
+        ['canonlog3_rec2020day'])
+    colorspaces.append(c_log_32)
+
+    c_log_33 = create_c_log(
+        'Rec. 2020 Tungsten',
+        'Canon-Log3',
+        lut_directory,
+        lut_resolution_1d,
+        ['canonlog3_rec2020tung'])
+    colorspaces.append(c_log_33)
+
+    c_log_34 = create_c_log(
+        'Cinema Gamut Daylight',
+        'Canon-Log3',
+        lut_directory,
+        lut_resolution_1d,
+        ['canonlog3_cgamutday'])
+    colorspaces.append(c_log_34)
+
+    c_log_35 = create_c_log(
+        'Cinema Gamut Tungsten',
+        'Canon-Log3',
+        lut_directory,
+        lut_resolution_1d,
+        ['canonlog3_cgamuttung'])
+    colorspaces.append(c_log_35)
+
     # Linearization Only
     c_log_7 = create_c_log(
         '',
@@ -328,6 +396,14 @@ def create_colorspaces(lut_directory, lut_resolution_1d):
         lut_resolution_1d,
         ['crv_canonlog2'])
     colorspaces.append(c_log2_7)
+
+    c_log3_7 = create_c_log(
+        '',
+        'Canon-Log3',
+        lut_directory,
+        lut_resolution_1d,
+        ['crv_canonlog3'])
+    colorspaces.append(c_log3_7)
 
     # Primaries Only
     c_log_8 = create_c_log(
