@@ -83,11 +83,11 @@ def create_log_c(gamut,
 
     IDT_maker_version = '0.08'
 
-    nominal_EI = 400
-    black_signal = 0.003907
+    nominal_EI = 400.0
+    black_signal = 16.0 / 4095.0 # 0.003907 
     mid_gray_signal = 0.01
-    encoding_gain = 0.256598
-    encoding_offset = 0.391007
+    encoding_gain = 500.0 / 1023.0 * 0.525 # 0.256598
+    encoding_offset = 400.0 / 1023.0 # 0.391007 
 
     def gain_for_EI(EI):
         return (math.log(EI / nominal_EI) / math.log(2) * (
@@ -194,6 +194,9 @@ def create_colorspaces(lut_directory, lut_resolution_1d):
     """
 
     colorspaces = []
+
+    # Ensure the ARRI 1D LUTs are at minimum 16 bit
+    lut_resolution_1d = max(65536, lut_resolution_1d)
 
     transfer_function = 'V3 LogC'
     gamut = 'Wide Gamut'
