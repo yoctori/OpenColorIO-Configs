@@ -15,7 +15,7 @@ import aces_ocio.generate_lut as genlut
 from aces_ocio.utilities import ColorSpace
 
 __author__ = 'ACES Developers'
-__copyright__ = 'Copyright (C) 2014 - 2015 - ACES Developers'
+__copyright__ = 'Copyright (C) 2014 - 2016 - ACES Developers'
 __license__ = ''
 __maintainer__ = 'ACES Developers'
 __email__ = 'aces@oscars.org'

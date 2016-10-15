@@ -24,7 +24,7 @@ from aces_ocio.generate_config import (
     generate_config)
 
 __author__ = 'ACES Developers'
-__copyright__ = 'Copyright (C) 2014 - 2015 - ACES Developers'
+__copyright__ = 'Copyright (C) 2014 - 2016 - ACES Developers'
 __license__ = ''
 __maintainer__ = 'ACES Developers'
 __email__ = 'aces@oscars.org'

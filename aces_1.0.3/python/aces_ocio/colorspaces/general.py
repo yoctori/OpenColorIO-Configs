@@ -17,7 +17,7 @@ from aces_ocio.colorspaces import aces
 from aces_ocio.utilities import ColorSpace, mat44_from_mat33
 
 __author__ = 'ACES Developers'
-__copyright__ = 'Copyright (C) 2014 - 2015 - ACES Developers'
+__copyright__ = 'Copyright (C) 2014 - 2016 - ACES Developers'
 __license__ = ''
 __maintainer__ = 'ACES Developers'
 __email__ = 'aces@oscars.org'
