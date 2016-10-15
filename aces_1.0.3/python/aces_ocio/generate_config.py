@@ -1697,7 +1697,7 @@ def main():
               'transfer function as the shaper: \n')
     usage += ('\tcreate_aces_config -a /path/to/aces-dev/transforms/ctl '
               '--lutResolution1d 4096 --lutResolution3d 65 -c aces_1.0.1 '
-              '--shaper DolbyPQ')
+              '--shaper DolbyPQ \n')
     usage += '\n'
     usage += 'Adding custom output transform'
     usage += '\n'
