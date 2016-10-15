@@ -102,6 +102,7 @@ Colorspaces and transforms representing the ACES ADX spaces used for film scanni
 - [Alex Fry's ACES 0.7.1 OCIO config](https://github.com/imageworks/OpenColorIO-Configs/tree/master/aces_0.7.1) was also a valuable resource.
 
 #### ARRI
+- [ARRI 'Working with ACES'](http://www.arri.com/camera/alexa_mini/learn/working_with_aces/)
 - [ARRI Input Transforms](https://github.com/ampas/aces-dev/tree/v1.0.3/transforms/ctl/idt/vendorSupplied/arri/alexa)
 - Conversations with Joseph Goldstone of ARRI
 
@@ -109,6 +110,7 @@ Colorspaces and transforms representing the ACES ADX spaces used for film scanni
 - [Canon ACES landing page](http://usa.canon.com/cusa/professional/standard_display/aces)
 - [Clog white paper](http://learn.usa.canon.com/app/pdfs/white_papers/White_Paper_Clog_optoelectronic.pdf)
 
+- [C700 Drivers and Software](https://www.usa.canon.com/internet/portal/us/home/support/details/cameras/cinema-eos/eos-c300-mark-ii?tab=drivers#Z7_MQH8HIC0L88RB0AMD0F1Q42K25)
 - [C500 Drivers and Software](http://www.usa.canon.com/cusa/professional/products/professional_cameras/cinema_eos_cameras/eos_c500#DriversAndSoftware)
 - [C300 Drivers and Software](http://www.usa.canon.com/cusa/professional/products/professional_cameras/cinema_eos_cameras/eos_c300#DriversAndSoftware)
     - Choose *OSX Mountain Lion v10.8* to download the IDTs
@@ -270,7 +272,7 @@ Features exposed for customization by the user include:
 - Selection of shaper function: Log2 or Dolby PQ
 
 ### CTL Source
-The configuration depends on the **ACES 1.0.3** release. The release contains the new ACEScct color space and a number of minor bug fixes and small additions, but is otherwise very similar as the master **ACES 1.0.2** release. 
+The configuration depends on the **ACES 1.0.3** release. The release contains a number of file renames and the new ACEScct color space and a number of minor bug fixes and small additions, but is otherwise very similar as the master **ACES 1.0.2** release. 
 
 The CTL is available here:
 
