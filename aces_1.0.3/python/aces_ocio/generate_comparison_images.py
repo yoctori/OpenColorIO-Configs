@@ -159,7 +159,7 @@ def generate_comparison_images(aces_ctl_directory,
     image_format = os.path.splitext( source_image_name )[-1].split('.')[-1]
 
     # RRT Only - Not compared, but helpful for reference
-    dest_image = '%s.RRT.a1.0.1' % (image_base)
+    dest_image = '%s.RRT' % (image_base)
 
     dest_image_ctl = os.path.join(destination_directory,
         ".".join([dest_image, 'ctl', image_format]) )
@@ -167,7 +167,7 @@ def generate_comparison_images(aces_ctl_directory,
     ctls = [
         os.path.join(aces_ctl_directory,
                      'rrt',
-                     'RRT.a1.0.1.ctl')
+                     'RRT.ctl')
         ]
 
     input_scale = 1.0
@@ -201,7 +201,7 @@ def generate_comparison_images(aces_ctl_directory,
         1. The difference between the the OCIO and CTL results
         '''
         if 'transformCTL' in odt_values:
-            output_transform_image = '%s.RRT.a1.0.1.%s' % (image_base, odt_name)
+            output_transform_image = '%s.RRT.%s' % (image_base, odt_name)
 
             # CTL render
             output_transform_image_ctl = os.path.join(destination_directory,
@@ -210,7 +210,7 @@ def generate_comparison_images(aces_ctl_directory,
             ctls = [
                 os.path.join(aces_ctl_directory,
                              'rrt',
-                             'RRT.a1.0.1.ctl'),
+                             'RRT.ctl'),
                 os.path.join(aces_ctl_directory,
                              'odt',
                              odt_values['transformCTL'])
@@ -263,7 +263,7 @@ def generate_comparison_images(aces_ctl_directory,
             3. The difference between the OCIO result and the original image
             '''
             if 'transformCTLInverse' in odt_values:
-                inverse_output_transform_image = '%s.Inverse%s.InvRRT.a1.0.1' % (image_base, odt_name)
+                inverse_output_transform_image = '%s.Inverse%s.InvRRT' % (image_base, odt_name)
 
                 # CTL render
                 inverse_output_transform_image_ctl = os.path.join(destination_directory,
@@ -275,7 +275,7 @@ def generate_comparison_images(aces_ctl_directory,
                                  odt_values['transformCTLInverse']),
                     os.path.join(aces_ctl_directory,
                                  'rrt',
-                                 'InvRRT.a1.0.1.ctl')
+                                 'InvRRT.ctl')
                     ]
 
                 input_scale = 1.0
