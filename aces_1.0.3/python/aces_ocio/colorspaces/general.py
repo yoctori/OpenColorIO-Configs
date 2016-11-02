@@ -8,6 +8,7 @@ Implements support for general colorspaces conversions and transfer functions.
 from __future__ import division
 
 import array
+import copy
 import os
 
 import PyOpenColorIO as ocio
@@ -525,6 +526,12 @@ def create_colorspaces(lut_directory,
         aliases=['srgb_texture'])
     colorspaces.append(cs)
 
+    # Keep a reference to this space
+    cs_srgb = copy.deepcopy(cs)
+    cs_srgb.name = "sRGB - Texture "
+    cs_srgb.family = "Input/Generic"
+    cs_srgb.aliases = []
+
     # -------------------------------------------------------------------------
     # Rec 709
     # -------------------------------------------------------------------------
@@ -674,6 +681,14 @@ def create_colorspaces(lut_directory,
 
     # Alphabetize the color spaces, based on name
     colorspaces = sorted(colorspaces, key=lambda e: e.name)
+
+    # -------------------------------------------------------------------------
+    # sRGB - Input Colorspace
+    # -------------------------------------------------------------------------
+    # A copy of the sRGB - Texture space that is part of the Input family
+    
+    # Make this the first color space in the list
+    colorspaces.insert(0, cs_srgb)
 
     return colorspaces
 
