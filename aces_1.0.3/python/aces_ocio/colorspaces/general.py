@@ -690,7 +690,13 @@ def create_colorspaces(lut_directory,
     # Make this the first color space in the list
     colorspaces.insert(0, cs_srgb)
 
-    return colorspaces
+    # -------------------------------------------------------------------------
+    # Role assignments
+    # -------------------------------------------------------------------------
+    role_overrides = {}
+    role_overrides['matte_paint'] = cs_srgb.name
+
+    return (colorspaces, role_overrides)
 
 
 def create_raw():

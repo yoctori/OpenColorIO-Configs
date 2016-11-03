@@ -13,11 +13,11 @@ roles:
   compositing_log: Input - ADX - ADX10
   data: Utility - Raw
   default: ACES - ACES2065-1
-  matte_paint: ACES - ACEScc
+  matte_paint: "Input - Generic - sRGB - Texture "
   reference: Utility - Raw
   rendering: ACES - ACEScg
   scene_linear: ACES - ACEScg
-  texture_paint: Utility - Raw
+  texture_paint: ACES - ACEScc
 
 displays:
   ACES:
@@ -2204,13 +2204,16 @@ colorspaces:
   - !<ColorSpace>
     name: Role - texture_paint
     family: Utility/Roles
-    equalitygroup: Raw
+    equalitygroup: ""
     bitdepth: 32f
     description: |
-      The Raw color space
-    isdata: true
+      The ACEScc color space
+      
+      ACES Transform ID : ACEScsc.ACEScc_to_ACES
+    isdata: false
     allocation: uniform
-    allocationvars: [0, 1]
+    allocationvars: [-0.3584, 1.468]
+    to_reference: !<ColorSpaceTransform> {src: ACES - ACEScc, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
     name: Role - default
@@ -2237,16 +2240,14 @@ colorspaces:
   - !<ColorSpace>
     name: Role - matte_paint
     family: Utility/Roles
-    equalitygroup: ""
+    equalitygroup: sRGB - Texture
     bitdepth: 32f
     description: |
-      The ACEScc color space
-      
-      ACES Transform ID : ACEScsc.ACEScc_to_ACES
+      The sRGB - Texture color space
     isdata: false
     allocation: uniform
-    allocationvars: [-0.3584, 1.468]
-    to_reference: !<ColorSpaceTransform> {src: ACES - ACEScc, dst: ACES - ACES2065-1}
+    allocationvars: [0, 1]
+    from_reference: !<ColorSpaceTransform> {src: ACES - ACES2065-1, dst: "Input - Generic - sRGB - Texture "}
 
   - !<ColorSpace>
     name: Role - color_picking
@@ -4201,13 +4202,16 @@ colorspaces:
   - !<ColorSpace>
     name: role_texture_paint
     family: Utility/Aliases
-    equalitygroup: Raw
+    equalitygroup: ""
     bitdepth: 32f
     description: |
-      The Raw color space
-    isdata: true
+      The ACEScc color space
+      
+      ACES Transform ID : ACEScsc.ACEScc_to_ACES
+    isdata: false
     allocation: uniform
-    allocationvars: [0, 1]
+    allocationvars: [-0.3584, 1.468]
+    to_reference: !<ColorSpaceTransform> {src: ACES - ACEScc, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
     name: role_default
@@ -4234,16 +4238,14 @@ colorspaces:
   - !<ColorSpace>
     name: role_matte_paint
     family: Utility/Aliases
-    equalitygroup: ""
+    equalitygroup: sRGB - Texture
     bitdepth: 32f
     description: |
-      The ACEScc color space
-      
-      ACES Transform ID : ACEScsc.ACEScc_to_ACES
+      The sRGB - Texture color space
     isdata: false
     allocation: uniform
-    allocationvars: [-0.3584, 1.468]
-    to_reference: !<ColorSpaceTransform> {src: ACES - ACEScc, dst: ACES - ACES2065-1}
+    allocationvars: [0, 1]
+    from_reference: !<ColorSpaceTransform> {src: ACES - ACES2065-1, dst: "Input - Generic - sRGB - Texture "}
 
   - !<ColorSpace>
     name: role_color_picking

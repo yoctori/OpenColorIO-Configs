@@ -1196,8 +1196,9 @@ def create_config_data(odt_info,
     # -------------------------------------------------------------------------
     # General Colorspaces
     # -------------------------------------------------------------------------
-    general_colorspaces = general.create_colorspaces(lut_directory,
-                                                     lut_resolution_1d)
+    (general_colorspaces, 
+     general_role_overrides) = general.create_colorspaces(lut_directory,
+                                                          lut_resolution_1d)
     for cs in general_colorspaces:
         config_data['colorSpaces'].append(cs)
 
@@ -1208,7 +1209,10 @@ def create_config_data(odt_info,
     # Overriding various roles
     config_data['roles']['data'] = raw.name
     config_data['roles']['reference'] = raw.name
-    config_data['roles']['texture_paint'] = raw.name
+
+    # Set role values as needed
+    for role, name in general_role_overrides.iteritems():
+        config_data['roles'][role] = name
 
     print('create_config_data - end')
 

@@ -2094,7 +2094,7 @@ def create_colorspaces(aces_ctl_directory,
              'matte_paint': ACEScc.name,
              'reference': '',
              'scene_linear': ACEScg.name,
-             'texture_paint': '',
+             'texture_paint': ACEScc.name,
              'compositing_linear': ACEScg.name,
              'rendering': ACEScg.name}
 
