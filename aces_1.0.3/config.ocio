@@ -13,7 +13,7 @@ roles:
   compositing_log: Input - ADX - ADX10
   data: Utility - Raw
   default: ACES - ACES2065-1
-  matte_paint: "Input - Generic - sRGB - Texture "
+  matte_paint: Utility - sRGB - Texture
   reference: Utility - Raw
   rendering: ACES - ACEScg
   scene_linear: ACES - ACEScg
@@ -792,7 +792,7 @@ colorspaces:
     to_reference: !<MatrixTransform> {matrix: [0.724489, 0.115141, 0.160371, 0, 0.0106593, 0.839605, 0.149735, 0, 0.0145602, 0.0285621, 1.014, 0, 0, 0, 0, 1]}
 
   - !<ColorSpace>
-    name: "Input - Generic - sRGB - Texture "
+    name: Input - Generic - sRGB - Texture
     family: Input/Generic
     equalitygroup: sRGB - Texture
     bitdepth: 32f
@@ -2247,7 +2247,7 @@ colorspaces:
     isdata: false
     allocation: uniform
     allocationvars: [0, 1]
-    from_reference: !<ColorSpaceTransform> {src: ACES - ACES2065-1, dst: "Input - Generic - sRGB - Texture "}
+    from_reference: !<ColorSpaceTransform> {src: ACES - ACES2065-1, dst: Utility - sRGB - Texture}
 
   - !<ColorSpace>
     name: Role - color_picking
@@ -4245,7 +4245,7 @@ colorspaces:
     isdata: false
     allocation: uniform
     allocationvars: [0, 1]
-    from_reference: !<ColorSpaceTransform> {src: ACES - ACES2065-1, dst: "Input - Generic - sRGB - Texture "}
+    from_reference: !<ColorSpaceTransform> {src: ACES - ACES2065-1, dst: Utility - sRGB - Texture}
 
   - !<ColorSpace>
     name: role_color_picking

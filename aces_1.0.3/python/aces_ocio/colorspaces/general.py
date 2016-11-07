@@ -528,7 +528,7 @@ def create_colorspaces(lut_directory,
 
     # Keep a reference to this space
     cs_srgb = copy.deepcopy(cs)
-    cs_srgb.name = "sRGB - Texture "
+    cs_srgb.name = "sRGB - Texture"
     cs_srgb.family = "Input/Generic"
     cs_srgb.aliases = []
 

@@ -683,6 +683,7 @@ def create_config(config_data,
     if prefix:
         prefixed_name = colorspace_prefixed_name(reference_data)
         prefixed_names[reference_data.name] = prefixed_name
+        reference_data.base_name = reference_data.name
         reference_data.name = prefixed_name
 
     print('Adding the reference color space : %s' % reference_data.name)
@@ -758,6 +759,7 @@ def create_config(config_data,
         if prefix:
             prefixed_name = colorspace_prefixed_name(colorspace)
             prefixed_names[colorspace.name] = prefixed_name
+            colorspace.base_name = colorspace.name
             colorspace.name = prefixed_name
 
         print('Creating new color space : %s' % colorspace.name)
@@ -1060,7 +1062,7 @@ def create_config(config_data,
 
         try:
             for colorspace in config_data['colorSpaces']:
-                colorspace.name = prefixed_names_inverse[colorspace.name]
+                colorspace.name = colorspace.base_name
         except:
             print('Error with Prefixed names')
             for original, prefixed in prefixed_names.iteritems():
