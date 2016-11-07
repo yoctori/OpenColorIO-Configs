@@ -51,17 +51,13 @@ class ColorSpace(object):
                  allocation_vars=None,
                  aces_transform_id=None):
         """
-        Constructor for ColorSpace container class
+        Constructor for ColorSpace container class.
 
         Parameters
         ----------
         name : str or unicode
-            Name of the colorspace
+            Name of the colorspace.
         All other arguments are optional
-
-        Returns
-        -------
-        None
         """
 
         if aliases is None:
@@ -270,8 +266,8 @@ def colorspace_prefixed_name(colorspace):
 
     Parameters
     ----------
-    colorspace : Colorspace
-        Colorspace to prefix.
+    colorspace : ColorSpace
+        ColorSpace to prefix.
 
     Returns
     -------
