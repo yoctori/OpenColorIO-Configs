@@ -1052,11 +1052,7 @@ def create_config(config_data,
 
     # Resetting colorspace names to their non-prefixed versions.
     if prefix:
-        prefixed_names_inverse = {}
-        for original, prefixed in prefixed_names.iteritems():
-            prefixed_names_inverse[prefixed] = original
-
-        reference_data.name = prefixed_names_inverse[reference_data.name]
+        reference_data.name = reference_data.base_name
 
         try:
             for colorspace in config_data['colorSpaces']:
@@ -1067,11 +1063,6 @@ def create_config(config_data,
                 print('%s, %s' % (original, prefixed))
 
             print('\n')
-
-            print('Inverse Lookup of Prefixed names')
-            for prefixed, original in prefixed_names_inverse.iteritems():
-                print('%s, %s' % (prefixed, original))
-            raise
 
     return config
 
