@@ -32,8 +32,8 @@ def create_c_log(gamut,
                  lut_resolution_1d,
                  aliases):
     """
-    Creates colorspace covering the conversion from CLog to ACES, with various transfer 
-    functions and encoding gamuts covered
+    Creates a colorspace covering the conversion from CLog to ACES, with
+    various transfer functions and encoding gamuts covered.
 
     Parameters
     ----------
@@ -46,13 +46,13 @@ def create_c_log(gamut,
     lut_resolution_1d : int
         The resolution of generated 1D LUTs
     aliases : list of str
-        Aliases for this colorspace
+        Aliases for this colorspace.
 
     Returns
     -------
     ColorSpace
-         A ColorSpace container class referencing the LUTs, matrices and identifying
-         information for the requested colorspace.    
+         A ColorSpace container class referencing the LUTs, matrices and
+         identifying information for the requested colorspace.
     """
 
     name = '%s - %s' % (transfer_function, gamut)
@@ -101,14 +101,15 @@ def create_c_log(gamut,
         return linear
 
     def c_log3_to_linear(code_value):
-        '''
-        if(clog3_ire < 0.04076162)
-            out = -( pow( 10, ( 0.07623209 - clog3_ire ) / 0.42889912 ) - 1 ) / 14.98325;
-        else if(clog3_ire <= 0.105357102)
-            out = ( clog3_ire - 0.073059361 ) / 2.3069815;
-        else
-            out = ( pow( 10, ( clog3_ire - 0.069886632 ) / 0.42889912 ) - 1 ) / 14.98325;
-        '''
+        # if(clog3_ire < 0.04076162)
+        #     out = -( pow( 10, ( 0.07623209 - clog3_ire ) / 0.42889912 )
+        #     - 1 ) / 14.98325;
+        # else if(clog3_ire <= 0.105357102)
+        #     out = ( clog3_ire - 0.073059361 ) / 2.3069815;
+        # else
+        #     out = ( pow( 10, ( clog3_ire - 0.069886632 ) / 0.42889912 )
+        #     - 1 ) / 14.98325;
+
         c1 = 0.42889912
         c2 = 14.98325
         c3 = 0.069886632
@@ -123,7 +124,7 @@ def create_c_log(gamut,
         clog3_ire = legal_to_full(code_value)
 
         if clog3_ire < c4:
-            linear = -(pow(10, ( c5 - clog3_ire ) / c1) - 1) / c2
+            linear = -(pow(10, (c5 - clog3_ire) / c1) - 1) / c2
         elif clog3_ire <= c6:
             linear = (clog3_ire - c7) / c8
         else:
@@ -239,19 +240,19 @@ def create_colorspaces(lut_directory, lut_resolution_1d):
     Parameters
     ----------
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
 
     Returns
     -------
     list
-         A list of colorspaces for Canon cameras and encodings 
+         A list of colorspaces for Canon cameras and encodings .
     """
 
     colorspaces = []
 
-    # Full conversion
+    # Full Conversion
     c_log_1 = create_c_log(
         'Rec. 709 Daylight',
         'Canon-Log',

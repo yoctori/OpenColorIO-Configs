@@ -34,29 +34,29 @@ def create_log_c(gamut,
                  lut_resolution_1d,
                  aliases):
     """
-    Creates colorspace covering the conversion from LogC to ACES, with various transfer 
-    functions and encoding gamuts covered
+    Creates a colorspace covering the conversion from LogC to ACES, with
+    various transfer functions and encoding gamuts covered.
 
     Parameters
     ----------
     gamut : str
         The name of the encoding gamut to use.
     transfer_function : str
-        The name of the transfer function to use
+        The name of the transfer function to use.
     exposure_index : str
-        The exposure index to use
+        The exposure index to use.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
     aliases : list of str
-        Aliases for this colorspace
+        Aliases for this colorspace.
 
     Returns
     -------
     ColorSpace
-         A ColorSpace container class referencing the LUTs, matrices and identifying
-         information for the requested colorspace.
+         A ColorSpace container class referencing the LUTs, matrices and
+         identifying information for the requested colorspace.
     """
 
     name = '%s (EI%s) - %s' % (transfer_function, exposure_index, gamut)
@@ -84,10 +84,10 @@ def create_log_c(gamut,
     IDT_maker_version = '0.08'
 
     nominal_EI = 400.0
-    black_signal = 16.0 / 4095.0 # 0.003907 
+    black_signal = 16.0 / 4095.0  # 0.003907
     mid_gray_signal = 0.01
-    encoding_gain = 500.0 / 1023.0 * 0.525 # 0.256598
-    encoding_offset = 400.0 / 1023.0 # 0.391007 
+    encoding_gain = 500.0 / 1023.0 * 0.525  # 0.256598
+    encoding_offset = 400.0 / 1023.0  # 0.391007
 
     def gain_for_EI(EI):
         return (math.log(EI / nominal_EI) / math.log(2) * (
@@ -183,14 +183,14 @@ def create_colorspaces(lut_directory, lut_resolution_1d):
     Parameters
     ----------
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
 
     Returns
     -------
     list
-         A list of colorspaces for ARRI cameras and encodings 
+         A list of colorspaces for ARRI cameras and encodings.
     """
 
     colorspaces = []

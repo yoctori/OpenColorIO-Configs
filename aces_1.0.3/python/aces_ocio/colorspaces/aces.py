@@ -12,7 +12,6 @@ import math
 import numpy
 import os
 import pprint
-import string
 import shutil
 
 import PyOpenColorIO as ocio
@@ -50,10 +49,10 @@ __all__ = ['ACES_AP1_TO_AP0',
            'create_ACES_LMT',
            'create_LMTs',
            'create_ACES_RRT_plus_ODT',
-           'create_ODTs',
-           'create_shapers_dolbypq'
            'create_shapers_log2',
+           'create_shapers_dolbypq'
            'create_shapers',
+           'create_ODTs',
            'get_transform_info',
            'get_ODTs_info',
            'get_LMTs_info',
@@ -82,16 +81,12 @@ ACES_XYZ_TO_AP0 = [1.0498110175, 0.0000000000, -0.0000974845,
 
 def create_ACES():
     """
-    Creates the *ACES2065-1* reference color space
-
-    Parameters
-    ----------
-    None
+    Creates the *ACES2065-1* reference colorspace.
 
     Returns
     -------
     ColorSpace
-         *ACES2065-1* and all its identifying information
+         *ACES2065-1* and all its identifying information.
     """
 
     # Defining the reference colorspace.
@@ -117,31 +112,31 @@ def create_ACEScc(aces_ctl_directory,
                   max_value=1,
                   input_scale=1):
     """
-    Creates the *ACEScc* reference color space
+    Creates the *ACEScc* reference colorspace.
 
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
     cleanup : bool
-        Whether or not to clean up the intermediate images 
+        Whether or not to clean up the intermediate images.
     name : str or unicode, optional
-        The name of the ColorSpace
+        The name of the colorspace.
     min_value : float, optional
-        The minimum value to consider for the space
+        The minimum value to consider for the colorspace.
     max_value : float, optional
-        The maximum value to consider for the space
+        The maximum value to consider for the colorspace.
     input_scale : float, optional
-        A scale factor to divide input values
+        A scale factor to divide input values.
 
     Returns
     -------
     ColorSpace
-         *ACEScc* and all its identifying information
+         *ACEScc* and all its identifying information.
     """
 
     cs = ColorSpace(name)
@@ -199,6 +194,7 @@ def create_ACEScc(aces_ctl_directory,
     cs.from_reference_transforms = []
     return cs
 
+
 def create_ACEScct(aces_ctl_directory,
                    lut_directory,
                    lut_resolution_1d,
@@ -208,31 +204,31 @@ def create_ACEScct(aces_ctl_directory,
                    max_value=1,
                    input_scale=1):
     """
-    Creates the *ACEScct* reference color space
+    Creates the *ACEScct* reference colorspace.
 
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
     cleanup : bool
-        Whether or not to clean up the intermediate images 
+        Whether or not to clean up the intermediate images.
     name : str or unicode, optional
-        The name of the ColorSpace
+        The name of the colorspace.
     min_value : float, optional
-        The minimum value to consider for the space
+        The minimum value to consider for the colorspace.
     max_value : float, optional
-        The maximum value to consider for the space
+        The maximum value to consider for the colorspace.
     input_scale : float, optional
-        A scale factor to divide input values
+        A scale factor to divide input values.
 
     Returns
     -------
     ColorSpace
-         *ACEScc* and all its identifying information
+         *ACEScc* and all its identifying information.
     """
 
     cs = ColorSpace(name)
@@ -249,24 +245,24 @@ def create_ACEScct(aces_ctl_directory,
                          'csc',
                          'ACEScct',
                          'ACEScsc.ACEScct_to_ACES.ctl')]
-    '''
-    Removing the ACES to ACEScg transform for ACEScct only.
-    Including this transform allows us to isolate the ACEScct transfer 
-    function from the change of gamut (AP1 to AP0) in the ACEScct to
-    ACES transform. The ACES to ACEScg transform clips values below 0
-    though. Since the ACEScct transfer function maps some values in the
-    normalized 0 to 1 range below 0, the clip in the ACES to ACEScg
-    transform is an issue when concatenated with the ACEScct to ACES
-    transform.
 
-            # This transform gets back to the *AP1* primaries.
-            # Useful as the 1d LUT is only covering the transfer function.
-            # The primaries switch is covered by the matrix below:
-            os.path.join(aces_ctl_directory,
-                         'csc',
-                         'ACEScg',
-                         'ACEScsc.ACES_to_ACEScg.ctl')]
-    '''
+    # Removing the ACES to ACEScg transform for ACEScct only.
+    # Including this transform allows us to isolate the ACEScct transfer
+    # function from the change of gamut (AP1 to AP0) in the ACEScct to
+    # ACES transform. The ACES to ACEScg transform clips values below 0
+    # though. Since the ACEScct transfer function maps some values in the
+    # normalized 0 to 1 range below 0, the clip in the ACES to ACEScg
+    # transform is an issue when concatenated with the ACEScct to ACES
+    # transform.
+    #
+    # # This transform gets back to the *AP1* primaries.
+    # # Useful as the 1d LUT is only covering the transfer function.
+    # # The primaries switch is covered by the matrix below:
+    # os.path.join(aces_ctl_directory,
+    #              'csc',
+    #              'ACEScg',
+    #              'ACEScsc.ACES_to_ACEScg.ctl')]
+
     lut = '%s_to_linear.spi1d' % name
 
     lut = sanitize(lut)
@@ -301,31 +297,32 @@ def create_ACEScct(aces_ctl_directory,
     cs.from_reference_transforms = []
     return cs
 
+
 def create_ACESproxy(aces_ctl_directory,
                      lut_directory,
                      lut_resolution_1d,
                      cleanup,
                      name='ACESproxy'):
     """
-    Creates the *ACESproxy* color space
+    Creates the *ACESproxy* colorspace.
 
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
     cleanup : bool
-        Whether or not to clean up the intermediate images 
+        Whether or not to clean up the intermediate images.
     name : str or unicode, optional
-        The name of the ColorSpace
+        The name of the colorspace.
 
     Returns
     -------
     ColorSpace
-         *ACESproxy* and all its identifying information
+         *ACESproxy* and all its identifying information.
     """
 
     cs = ColorSpace(name)
@@ -388,16 +385,12 @@ def create_ACESproxy(aces_ctl_directory,
 # -------------------------------------------------------------------------
 def create_ACEScg():
     """
-    Creates the *ACEScg* color space
-
-    Parameters
-    ----------
-    None
+    Creates the *ACEScg* colorspace.
 
     Returns
     -------
     ColorSpace
-         *ACEScg* and all its identifying information
+         *ACEScg* and all its identifying information.
     """
 
     name = 'ACEScg'
@@ -428,7 +421,7 @@ def create_ACEScg():
     # to fail.
 
     # *AP1* primaries to *AP0* primaries
-    #cs.from_reference_transforms.append({
+    # cs.from_reference_transforms.append({
     #    'type': 'matrix',
     #    'matrix': mat44_from_mat33(ACES_AP0_TO_AP1),
     #    'direction': 'forward'})
@@ -443,21 +436,21 @@ def create_ADX(lut_directory,
                bit_depth=10,
                name='ADX'):
     """
-    Creates the *ADX* color space
+    Creates the *ADX* colorspace.
 
     Parameters
     ----------
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     bit_depth : int
-        Choose either 10 or 16 bit ADX
+        Choose either 10 or 16 bit ADX.
     name : str or unicode, optional
-        The name of the ColorSpace
+        The name of the colorspace.
 
     Returns
     -------
     ColorSpace
-         *ADX* and all its identifying information
+         *ADX* and all its identifying information.
     """
 
     name = '%s%s' % (name, bit_depth)
@@ -617,31 +610,31 @@ def create_generic_log(aces_ctl_directory,
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
     cleanup : bool
-        Whether or not to clean up the intermediate images 
+        Whether or not to clean up the intermediate images.
     name : str or unicode, optional
-        The name of the ColorSpace
+        The name of the colorspace.
     aliases : list of str or unicode, optional
-        The alias names to use for the ColorSpace
+        The alias names to use for the colorspace.
     min_value : float, optional
-        The minimum value to consider for the space
+        The minimum value to consider for the colorspace.
     max_value : float, optional
-        The maximum value to consider for the space
+        The maximum value to consider for the colorspace.
     input_scale : float, optional
-        A scale factor to divide input values
+        A scale factor to divide input values.
     middle_grey : float, optional
-        The middle of the dynamic range covered by the transfer function
+        The middle of the dynamic range covered by the transfer function.
     min_exposure : float, optional
-        The offset from middle grey, in stops, that defines the low end of the dynamic 
-        range covered by the transfer function
+        The offset from middle grey, in stops, that defines the low end of the
+        dynamic range covered by the transfer function.
     max_exposure : float, optional
-        The offset from middle grey, in stops, that defines the high end of the dynamic 
-        range covered by the transfer function
+        The offset from middle grey, in stops, that defines the high end of
+        the dynamic range covered by the transfer function.
 
     Returns
     -------
@@ -712,23 +705,23 @@ def create_Dolby_PQ(aces_ctl_directory,
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
     cleanup : bool
-        Whether or not to clean up the intermediate images 
+        Whether or not to clean up the intermediate images.
     name : str or unicode, optional
-        The name of the ColorSpace
+        The name of the colorspace.
     aliases : list of str or unicode, optional
-        The alias names to use for the ColorSpace
+        The alias names to use for the colorspace.
     min_value : float, optional
-        The minimum value to consider for the space
+        The minimum value to consider for the colorspace.
     max_value : float, optional
-        The maximum value to consider for the space
+        The maximum value to consider for the colorspace.
     input_scale : float, optional
-        A scale factor to divide input values
+        A scale factor to divide input values.
 
     Returns
     -------
@@ -794,41 +787,41 @@ def create_Dolby_PQ_shaper(aces_ctl_directory,
                            min_exposure=-6.5,
                            max_exposure=6.5):
     """
-    Creates a *Dolby PQ* colorspace that covers a specific dynamic range
+    Creates a *Dolby PQ* colorspace that covers a specific dynamic range.
 
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
     cleanup : bool
-        Whether or not to clean up the intermediate images 
+        Whether or not to clean up the intermediate images.
     name : str or unicode, optional
-        The name of the ColorSpace
+        The name of the colorspace.
     aliases : list of str or unicode, optional
-        The alias names to use for the ColorSpace
+        The alias names to use for the colorspace.
     min_value : float, optional
-        The minimum value to consider for the space
+        The minimum value to consider for the colorspace.
     max_value : float, optional
-        The maximum value to consider for the space
+        The maximum value to consider for the colorspace.
     input_scale : float, optional
-        A scale factor to divide input values
+        A scale factor to divide input values.
     middle_grey : float, optional
-        The middle of the dynamic range covered by the transfer function
+        The middle of the dynamic range covered by the transfer function.
     min_exposure : float, optional
-        The offset from middle grey, in stops, that defines the low end of the dynamic 
-        range covered by the transfer function
+        The offset from middle grey, in stops, that defines the low end of the
+        dynamic range covered by the transfer function.
     max_exposure : float, optional
-        The offset from middle grey, in stops, that defines the high end of the dynamic 
-        range covered by the transfer function
+        The offset from middle grey, in stops, that defines the high end of
+        the dynamic range covered by the transfer function.
 
     Returns
     -------
     ColorSpace
-         A *Dolby PQ* colorspace that covers a specific dynamic range
+         A *Dolby PQ* colorspace that covers a specific dynamic range.
     """
 
     if aliases is None:
@@ -892,22 +885,23 @@ def create_ACES_LMT(lmt_name,
     Parameters
     ----------
     lmt_name : str or unicode
-        The name of the Look Transform (LMT)
+        The name of the Look Transform (LMT).
     lmt_values : dict
-        A collection of values that define the Look Transform's attributes and behavior
+        A collection of values that define the Look Transform's attributes and
+        behavior.
     shaper_info : dict
-        A collection of values that define the Shaper to use when generating LUTs to
-        represent the Look Transform
+        A collection of values that define the Shaper to use when generating
+        LUTs to represent the Look Transform.
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_3d : int, optional
-        The resolution of generated 3D LUTs
+        The resolution of generated 3D LUTs.
     cleanup : bool, optional
-        Whether or not to clean up the intermediate images 
+        Whether or not to clean up the intermediate images.
     aliases : list of str or unicode, optional
-        The alias names to use for the ColorSpace
+        The alias names to use for the colorspace.
 
     Returns
     -------
@@ -1021,30 +1015,28 @@ def create_LMTs(aces_ctl_directory,
                 lmt_info,
                 cleanup):
     """
-    Create ColorSpaces representing the *ACES Look Transforms*
+    Create ColorSpaces representing the *ACES Look Transforms*.
 
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
     lut_resolution_3d : int
-        The resolution of generated 3D LUTs
+        The resolution of generated 3D LUTs.
     cleanup : bool
-        Whether or not to clean up the intermediate images 
-    aliases : list of str or unicode, optional
-        The alias names to use for the ColorSpace
+        Whether or not to clean up the intermediate images.
     lmt_info : dict
         A collection of values that define the Look Transforms that need to be 
-        generated
+        generated.
 
     Returns
     -------
     list of ColorSpaces
-         ColorSpaces representing the *ACES Look Transforms*
+         ColorSpaces representing the *ACES Look Transforms*.
     """
 
     colorspaces = []
@@ -1124,22 +1116,23 @@ def create_ACES_RRT_plus_ODT(odt_name,
     Parameters
     ----------
     odt_name : str or unicode
-        The name of the Output Transform (RRT + ODT)
+        The name of the Output Transform (RRT + ODT).
     odt_values : dict
-        A collection of values that define the Output Transform's attributes and behavior
+        A collection of values that define the Output Transform's attributes
+        and behavior.
     shaper_info : dict
-        A collection of values that define the Shaper to use when generating LUTs to
-        represent the Output Transform
+        A collection of values that define the Shaper to use when generating
+        LUTs to represent the Output Transform.
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_3d : int, optional
-        The resolution of generated 3D LUTs
+        The resolution of generated 3D LUTs.
     cleanup : bool, optional
-        Whether or not to clean up the intermediate images 
+        Whether or not to clean up the intermediate images.
     aliases : list of str or unicode, optional
-        The alias names to use for the ColorSpace
+        The alias names to use for the colorspace.
 
     Returns
     -------
@@ -1282,6 +1275,7 @@ def create_ACES_RRT_plus_ODT(odt_name,
 
     return cs
 
+
 # -------------------------------------------------------------------------
 # *Log 2 Shapers*
 # -------------------------------------------------------------------------
@@ -1295,33 +1289,34 @@ def create_shapers_log2(aces_ctl_directory,
                         max_exposure):
     """
     Creates two *Log base 2* colorspaces, that cover a specific dynamic range. 
-    One has no gamut conversion. The other with has conversion from *ACES* *AP0* to *AP1*.
+    One has no gamut conversion. The other with has conversion from *ACES*
+    *AP0* to *AP1*.
 
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
     cleanup : bool
-        Whether or not to clean up the intermediate images 
+        Whether or not to clean up the intermediate images.
     shaper_name : str or unicode, optional
-        The name of the ColorSpace
+        The name of the colorspace.
     middle_grey : float
-        The middle of the dynamic range covered by the transfer function
+        The middle of the dynamic range covered by the transfer function.
     min_exposure : float
-        The offset from middle grey, in stops, that defines the low end of the dynamic 
-        range covered by the transfer function
+        The offset from middle grey, in stops, that defines the low end of the
+        dynamic range covered by the transfer function.
     max_exposure : float
-        The offset from middle grey, in stops, that defines the high end of the dynamic 
-        range covered by the transfer function
+        The offset from middle grey, in stops, that defines the high end of
+        the dynamic range covered by the transfer function.
 
     Returns
     -------
     ColorSpace
-         A *Log base 2* colorspace that covers a specific dynamic range
+         A *Log base 2* colorspace that covers a specific dynamic range.
     """
 
     colorspaces = []
@@ -1378,11 +1373,11 @@ def create_shapers_log2(aces_ctl_directory,
     log2_shaper_api1_colorspace.to_reference_transforms.append({
         'type': 'matrix',
         'matrix': mat44_from_mat33(ACES_AP1_TO_AP0),
-        'direction': 'forward'
-    })
+        'direction': 'forward'})
     colorspaces.append(log2_shaper_api1_colorspace)
 
     return shaper_data, colorspaces
+
 
 # -------------------------------------------------------------------------
 # *Dolby PQ-based Shapers*
@@ -1397,36 +1392,38 @@ def create_shapers_dolbypq(aces_ctl_directory,
                            max_exposure):
     """
     Creates two *Dolby PQ* colorspaces, that cover a specific dynamic range. 
-    One has no gamut conversion. The other with has conversion from *ACES* *AP0* to *AP1*.
+    One has no gamut conversion. The other with has conversion from *ACES*
+    *AP0* to *AP1*.
 
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
     cleanup : bool
-        Whether or not to clean up the intermediate images 
+        Whether or not to clean up the intermediate images.
     shaper_name : str or unicode, optional
-        The name of the ColorSpace
+        The name of the colorspace.
     middle_grey : float
-        The middle of the dynamic range covered by the transfer function
+        The middle of the dynamic range covered by the transfer function.
     min_exposure : float
-        The offset from middle grey, in stops, that defines the low end of the dynamic 
-        range covered by the transfer function
+        The offset from middle grey, in stops, that defines the low end of the
+        dynamic range covered by the transfer function.
     max_exposure : float
-        The offset from middle grey, in stops, that defines the high end of the dynamic 
-        range covered by the transfer function
+        The offset from middle grey, in stops, that defines the high end of
+        the dynamic range covered by the transfer function.
 
     Returns
     -------
     dict
-        Values defining a Shaper
+        Values defining a Shaper.
     list of ColorSpaces
-         A list of *Dolby PQ* colorspaces that covers a specific dynamic range
+         A list of *Dolby PQ* colorspaces that covers a specific dynamic range.
     """
+
     colorspaces = []
     shaper_data = {}
 
@@ -1480,8 +1477,7 @@ def create_shapers_dolbypq(aces_ctl_directory,
     dolby_pq_shaper_api1_colorspace.to_reference_transforms.append({
         'type': 'matrix',
         'matrix': mat44_from_mat33(ACES_AP1_TO_AP0),
-        'direction': 'forward'
-    })
+        'direction': 'forward'})
     colorspaces.append(dolby_pq_shaper_api1_colorspace)
 
     return shaper_data, colorspaces
@@ -1494,30 +1490,29 @@ def create_shapers(aces_ctl_directory,
                    lut_directory,
                    lut_resolution_1d,
                    cleanup):
-
     """
     Creates sets of shaper colorspaces covering the *Log 2* and *Dolby PQ* 
     transfer functions and dynamic ranges suitable of use with the 48 nit, 
-    1000 nit, 2000 nit and 4000 nit *ACES Output Transforms*
+    1000 nit, 2000 nit and 4000 nit *ACES Output Transforms*.
 
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
     cleanup : bool
-        Whether or not to clean up the intermediate images 
+        Whether or not to clean up the intermediate images.
 
     Returns
     -------
     list of dicts
-        Values defining a set of Shapers
+        Values defining a set of Shapers.
     list of ColorSpaces
          A list of Shaper colorspaces that covers a varying dynamic ranges and
-         transfer functions
+         transfer functions.
     """
 
     colorspaces = []
@@ -1525,57 +1520,61 @@ def create_shapers(aces_ctl_directory,
 
     # Define the base *Log2 48 nits shaper*
     #
-    (log2_48nits_shaper_data, 
-     log2_48nits_colorspaces) = create_shapers_log2(aces_ctl_directory,
-       lut_directory,
-       lut_resolution_1d,
-       cleanup,
-       'Log2 48 nits Shaper',
-       0.18,
-       -6.5,
-       6.5)
+    (log2_48nits_shaper_data,
+     log2_48nits_colorspaces) = create_shapers_log2(
+        aces_ctl_directory,
+        lut_directory,
+        lut_resolution_1d,
+        cleanup,
+        'Log2 48 nits Shaper',
+        0.18,
+        -6.5,
+        6.5)
     colorspaces.extend(log2_48nits_colorspaces)
     shaper_data.update(log2_48nits_shaper_data)
 
     # Define the base *Log2 1000 nits shaper*
     #
-    (log2_1000nits_shaper_data, 
-     log2_1000nits_colorspaces) = create_shapers_log2(aces_ctl_directory,
-       lut_directory,
-       lut_resolution_1d,
-       cleanup,
-       'Log2 1000 nits Shaper',
-       0.18,
-       -12.0,
-       10.0)
+    (log2_1000nits_shaper_data,
+     log2_1000nits_colorspaces) = create_shapers_log2(
+        aces_ctl_directory,
+        lut_directory,
+        lut_resolution_1d,
+        cleanup,
+        'Log2 1000 nits Shaper',
+        0.18,
+        -12.0,
+        10.0)
     colorspaces.extend(log2_1000nits_colorspaces)
     shaper_data.update(log2_1000nits_shaper_data)
 
     # Define the base *Log2 2000 nits shaper*
     #
-    (log2_2000nits_shaper_data, 
-     log2_2000nits_colorspaces) = create_shapers_log2(aces_ctl_directory,
-       lut_directory,
-       lut_resolution_1d,
-       cleanup,
-       'Log2 2000 nits Shaper',
-       0.18,
-       -12.0,
-       11.0)
+    (log2_2000nits_shaper_data,
+     log2_2000nits_colorspaces) = create_shapers_log2(
+        aces_ctl_directory,
+        lut_directory,
+        lut_resolution_1d,
+        cleanup,
+        'Log2 2000 nits Shaper',
+        0.18,
+        -12.0,
+        11.0)
     colorspaces.extend(log2_2000nits_colorspaces)
     shaper_data.update(log2_2000nits_shaper_data)
 
     # Define the base *Log2 4000 nits shaper*
     #
-    (log2_4000nits_shaper_data, 
-     log2_4000nits_colorspaces) = create_shapers_log2(aces_ctl_directory,
-       lut_directory,
-       lut_resolution_1d,
-       cleanup,
-       'Log2 4000 nits Shaper',
-       0.18,
-       -12.0,
-       12.0)
+    (log2_4000nits_shaper_data,
+     log2_4000nits_colorspaces) = create_shapers_log2(
+        aces_ctl_directory,
+        lut_directory,
+        lut_resolution_1d,
+        cleanup,
+        'Log2 4000 nits Shaper',
+        0.18,
+        -12.0,
+        12.0)
     colorspaces.extend(log2_4000nits_colorspaces)
     shaper_data.update(log2_4000nits_shaper_data)
 
@@ -1609,61 +1608,66 @@ def create_shapers(aces_ctl_directory,
 
     # Define the *Dolby PQ 48 nits shaper*
     #
-    (dolbypq_48nits_shaper_data, 
-     dolbypq_48nits_colorspaces) = create_shapers_dolbypq(aces_ctl_directory,
-       lut_directory,
-       lut_resolution_1d,
-       cleanup,
-       'Dolby PQ 48 nits Shaper',
-       0.18,
-       -6.5,
-       6.5)
+    (dolbypq_48nits_shaper_data,
+     dolbypq_48nits_colorspaces) = create_shapers_dolbypq(
+        aces_ctl_directory,
+        lut_directory,
+        lut_resolution_1d,
+        cleanup,
+        'Dolby PQ 48 nits Shaper',
+        0.18,
+        -6.5,
+        6.5)
     colorspaces.extend(dolbypq_48nits_colorspaces)
     shaper_data.update(dolbypq_48nits_shaper_data)
 
     # Define the *Dolby PQ 1000 nits shaper*
     #
-    (dolbypq_1000nits_shaper_data, 
-     dolbypq_1000nits_colorspaces) = create_shapers_dolbypq(aces_ctl_directory,
-       lut_directory,
-       lut_resolution_1d,
-       cleanup,
-       'Dolby PQ 1000 nits Shaper',
-       0.18,
-       -12.0,
-       10.0)
+    (dolbypq_1000nits_shaper_data,
+     dolbypq_1000nits_colorspaces) = create_shapers_dolbypq(
+        aces_ctl_directory,
+        lut_directory,
+        lut_resolution_1d,
+        cleanup,
+        'Dolby PQ 1000 nits Shaper',
+        0.18,
+        -12.0,
+        10.0)
     colorspaces.extend(dolbypq_1000nits_colorspaces)
     shaper_data.update(dolbypq_1000nits_shaper_data)
 
     # Define the *Dolby PQ 2000 nits shaper*
     #
-    (dolbypq_2000nits_shaper_data, 
-     dolbypq_2000nits_colorspaces) = create_shapers_dolbypq(aces_ctl_directory,
-       lut_directory,
-       lut_resolution_1d,
-       cleanup,
-       'Dolby PQ 2000 nits Shaper',
-       0.18,
-       -12.0,
-       11.0)
+    (dolbypq_2000nits_shaper_data,
+     dolbypq_2000nits_colorspaces) = create_shapers_dolbypq(
+        aces_ctl_directory,
+        lut_directory,
+        lut_resolution_1d,
+        cleanup,
+        'Dolby PQ 2000 nits Shaper',
+        0.18,
+        -12.0,
+        11.0)
     colorspaces.extend(dolbypq_2000nits_colorspaces)
     shaper_data.update(dolbypq_2000nits_shaper_data)
 
     # Define the *Dolby PQ 4000 nits shaper*
     #
-    (dolbypq_4000nits_shaper_data, 
-     dolbypq_4000nits_colorspaces) = create_shapers_dolbypq(aces_ctl_directory,
-       lut_directory,
-       lut_resolution_1d,
-       cleanup,
-       'Dolby PQ 4000 nits Shaper',
-       0.18,
-       -12.0,
-       12.0)
+    (dolbypq_4000nits_shaper_data,
+     dolbypq_4000nits_colorspaces) = create_shapers_dolbypq(
+        aces_ctl_directory,
+        lut_directory,
+        lut_resolution_1d,
+        cleanup,
+        'Dolby PQ 4000 nits Shaper',
+        0.18,
+        -12.0,
+        12.0)
     colorspaces.extend(dolbypq_4000nits_colorspaces)
     shaper_data.update(dolbypq_4000nits_shaper_data)
 
     return shaper_data, colorspaces
+
 
 # -------------------------------------------------------------------------
 # *ODTs*
@@ -1678,37 +1682,37 @@ def create_ODTs(aces_ctl_directory,
                 linear_display_space,
                 log_display_space):
     """
-    Create ColorSpaces representing the *ACES Output Transforms*
+    Create ColorSpaces representing the *ACES Output Transforms*.
 
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
     lut_resolution_3d : int
-        The resolution of generated 3D LUTs
+        The resolution of generated 3D LUTs.
     odt_info : dict
-        A collection of values that define the Output Transforms that need to be 
-        generated
+        A collection of values that define the Output Transforms that need to
+        be generated.
     shaper_name : str or unicode, optional
-        The name of Shaper ColorSpace to use when generating LUTs
+        The name of Shaper colorspace to use when generating LUTs.
     cleanup : bool
-        Whether or not to clean up the intermediate images 
+        Whether or not to clean up the intermediate images.
     linear_display_space : lstr or unicode
-        The name of the ColorSpace to use for the raw or linear View
+        The name of the colorspace to use for the raw or linear View.
     log_display_space : lstr or unicode
-        The name of the ColorSpace to use for the log View
+        The name of the colorspace to use for the log View.
 
     Returns
     -------
     list of ColorSpaces
-         ColorSpaces representing the *ACES Output Transforms*
+         ColorSpaces representing the *ACES Output Transforms*.
     list of dicts
         Collections of names and ColorSpaces corresponding to the Displays and
-        Views
+        Views.
     """
 
     colorspaces = []
@@ -1718,9 +1722,9 @@ def create_ODTs(aces_ctl_directory,
     # *RRT / ODT* Shaper Options
     # -------------------------------------------------------------------------
     shaper_data, shaper_colorspaces = create_shapers(aces_ctl_directory,
-        lut_directory,
-        lut_resolution_1d,
-        cleanup)
+                                                     lut_directory,
+                                                     lut_resolution_1d,
+                                                     cleanup)
 
     colorspaces.extend(shaper_colorspaces)
 
@@ -1729,10 +1733,14 @@ def create_ODTs(aces_ctl_directory,
     rrt_shaper_48nits = shaper_data[shaper_name]
 
     # Override 1000, 2000 and 4000 nits to always use the PQ shapers
-    pq_shaper_name = ("%s %s" % ('Dolby PQ', ' '.join(shaper_name.split(' ')[-3:])) )
-    rrt_shaper_1000nits = shaper_data[pq_shaper_name.replace("48 nits", "1000 nits")]
-    rrt_shaper_2000nits = shaper_data[pq_shaper_name.replace("48 nits", "2000 nits")]
-    rrt_shaper_4000nits = shaper_data[pq_shaper_name.replace("48 nits", "4000 nits")]
+    pq_shaper_name = (
+        '%s %s' % ('Dolby PQ', ' '.join(shaper_name.split(' ')[-3:])))
+    rrt_shaper_1000nits = shaper_data[
+        pq_shaper_name.replace('48 nits', '1000 nits')]
+    rrt_shaper_2000nits = shaper_data[
+        pq_shaper_name.replace('48 nits', '2000 nits')]
+    rrt_shaper_4000nits = shaper_data[
+        pq_shaper_name.replace('48 nits', '4000 nits')]
 
     # *RRT + ODT* combinations.
     sorted_odts = sorted(odt_info.iteritems(), key=lambda x: x[1])
@@ -1778,7 +1786,7 @@ def create_ODTs(aces_ctl_directory,
 def get_transform_info(ctl_transform):
     """
     Returns the information stored in first couple of lines of an official
-    *ACES Transform* CTL file
+    *ACES Transform* CTL file.
 
     Parameters
     ----------
@@ -1788,8 +1796,8 @@ def get_transform_info(ctl_transform):
     Returns
     -------
     tuple
-         Combination of Transform ID, User Name, User Name Prefix and Full/Legal
-         switch
+         Combination of Transform ID, User Name, User Name Prefix and
+         Full / Legal switch.
     """
 
     with open(ctl_transform, 'rb') as fp:
@@ -1820,17 +1828,17 @@ def get_transform_info(ctl_transform):
 def get_ODTs_info(aces_ctl_directory):
     """
     Returns the information describing the names and CTL files associated with 
-    the *ACES Output Transforms* in a given ACES release
+    the *ACES Output Transforms* in a given *ACES* release.
 
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the base *ACES* CTL directory
+        The path to the base *ACES* CTL directory.
 
     Returns
     -------
     dict of dicts
-         Collecton of dicts, one describing each *ACES Output Transform*
+         Collectoin of dicts, one describing each *ACES Output Transform*.
     """
 
     # TODO: Investigate usage of *files_walker* definition here.
@@ -1858,7 +1866,7 @@ def get_ODTs_info(aces_ctl_directory):
 
         # Building full name.
         transform_ctl = odt_tokens[-1]
-        odt_name = string.join(transform_ctl.split('.')[1:-1], '.')
+        odt_name = '.'.join(transform_ctl.split('.')[1:-1])
 
         # Finding id, user name and user name prefix.
         (transform_id,
@@ -1909,17 +1917,17 @@ def get_ODTs_info(aces_ctl_directory):
 def get_LMTs_info(aces_ctl_directory):
     """
     Returns the information describing the names and CTL files associated with 
-    the *ACES Look Transforms* in a given ACES release
+    the *ACES Look Transforms* in a given *ACES* release.
 
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the base *ACES* CTL directory
+        The path to the base *ACES* CTL directory.
 
     Returns
     -------
     dict of dicts
-         Collecton of dicts, one describing each *ACES Look Transform*
+         Collection of dicts, one describing each *ACES Look Transform*.
     """
 
     # TODO: Investigate refactoring with previous definition.
@@ -1940,7 +1948,7 @@ def get_LMTs_info(aces_ctl_directory):
     for lmt_ctl in lmt_ctls:
         lmt_tokens = os.path.split(lmt_ctl)
 
-        # Handlimg nested directories.
+        # Handling nested directories.
         lmt_path_tokens = os.path.split(lmt_tokens[-2])
         lmt_dir = lmt_path_tokens[-1]
         while lmt_path_tokens[-2][-3:] != 'ctl':
@@ -1949,7 +1957,7 @@ def get_LMTs_info(aces_ctl_directory):
 
         # Building full name.
         transform_ctl = lmt_tokens[-1]
-        lmt_name = string.join(transform_ctl.split('.')[1:-1], '.')
+        lmt_name = '.'.join(transform_ctl.split('.')[1:-1])
 
         # Finding id, user name and user name prefix.
         (transform_id,
@@ -2001,39 +2009,39 @@ def create_colorspaces(aces_ctl_directory,
                        shaper_name,
                        cleanup):
     """
-    Generates the *ACES* colorspaces, displays and views
+    Generates the *ACES* colorspaces, displays and views.
 
     Parameters
     ----------
     aces_ctl_directory : str or unicode
-        The path to the aces 'transforms/ctl/utilities'
+        The path to *ACES* *CTL* *transforms/ctl/utilities* directory.
     lut_directory : str or unicode 
-        The directory to use when generating LUTs
+        The directory to use when generating LUTs.
     lut_resolution_1d : int
-        The resolution of generated 1D LUTs
+        The resolution of generated 1D LUTs.
     lut_resolution_3d : int
-        The resolution of generated 3D LUTs
+        The resolution of generated 3D LUTs.
     lmt_info : dict
         A collection of values that define the Look Transforms that need to be 
-        generated
+        generated.
     odt_info : dict
-        A collection of values that define the Output Transforms that need to be 
-        generated
+        A collection of values that define the Output Transforms that need to
+        be generated.
     shaper_name : str or unicode, optional
-        The name of Shaper ColorSpace to use when generating LUTs
+        The name of Shaper colorspace to use when generating LUTs.
     cleanup : bool
-        Whether or not to clean up the intermediate images 
+        Whether or not to clean up the intermediate images.
 
     Returns
     -------
     tuple
-         A collection of values defining
-            the reference colorspace : ACES
-            a list of the colorspaces created
-            a list of the displays created
-            a list of the general log colorspace
-            a list of the role assignments
-            the name of the default display
+         A collection of values defining:
+            - the reference colorspace: ACES
+            - a list of the colorspaces created
+            - a list of the displays created
+            - a list of the general log colorspace
+            - a list of the role assignments
+            - the name of the default display
     """
 
     colorspaces = []
@@ -2046,8 +2054,8 @@ def create_colorspaces(aces_ctl_directory,
     colorspaces.append(ACEScc)
 
     ACEScct = create_ACEScct(aces_ctl_directory, lut_directory,
-                           lut_resolution_1d, cleanup,
-                           min_value=-0.24913611, max_value=1.468)
+                             lut_resolution_1d, cleanup,
+                             min_value=-0.24913611, max_value=1.468)
     colorspaces.append(ACEScct)
 
     ACESproxy = create_ACESproxy(aces_ctl_directory, lut_directory,
