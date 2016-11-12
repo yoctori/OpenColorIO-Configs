@@ -105,7 +105,8 @@ def idiff_images(image_1,
 def generate_comparison_images(aces_ctl_directory,
                                config_directory,
                                source_image,
-                               destination_directory):
+                               destination_directory,
+                               specific_odts=None):
     """
     Generates a set of images from *CTL* and from *OCIO* for all Output
     Transforms.
@@ -161,6 +162,9 @@ def generate_comparison_images(aces_ctl_directory,
     # Output Transforms
     for odt_ctl_name, odt_values in odt_info.iteritems():
         odt_name = odt_values['transformUserName']
+
+        if specific_odts and odt_name not in specific_odts:
+          continue
 
         print('')
         print('Output Transform - %s' % odt_name)
@@ -336,9 +340,15 @@ def main():
     usage += ('A script to compare results between OCIO and CTL '
               'for an ACES release.\n')
     usage += '\n'
-    usage += 'The source image should be an EXR or floating point TIFF.'
-    usage += 'If the OCIO configDir is not specified, the CTL transforms will'
+    usage += 'The source image should be an EXR or floating point TIFF '
+    usage += 'in the ACES 2065-1 colorspace. '
+    usage += '\n'
+    usage += 'If the OCIO configDir is not specified, the CTL transforms will '
     usage += 'be run.'
+    usage += '\n'
+    usage += 'Use the -o option to specify a specific set of ODTs to compare.'
+    usage += '\n'
+    usage += 'Ex. -o sRGB -o P3-DCI'
     usage += '\n'
 
     p = optparse.OptionParser(description='',
@@ -352,6 +362,7 @@ def main():
         ACES_OCIO_CONFIGURATION_DIRECTORY_ENVIRON, None))
     p.add_option('--sourceImage', '-s', type='string', default='')
     p.add_option('--destinationDir', '-d', type='string', default='')
+    p.add_option('--odt', '-o', type='string', default=None, action='append')
 
     options, arguments = p.parse_args()
 
@@ -359,6 +370,7 @@ def main():
     config_directory = options.configDir
     source_image = options.sourceImage
     destination_directory = options.destinationDir
+    specific_odts = options.odt
 
     print('command line : \n%s\n' % ' '.join(sys.argv))
 
@@ -369,7 +381,8 @@ def main():
     return generate_comparison_images(aces_ctl_directory,
                                       config_directory,
                                       source_image,
-                                      destination_directory)
+                                      destination_directory,
+                                      specific_odts=specific_odts)
 
 
 if __name__ == '__main__':
