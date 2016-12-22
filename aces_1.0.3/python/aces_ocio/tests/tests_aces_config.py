@@ -35,7 +35,6 @@ __all__ = ['REFERENCE_CONFIG_ROOT_DIRECTORY',
            'UNHASHABLE_TEST_PATTERNS',
            'TestACESConfig']
 
-
 # TODO: Investigate how the current config has been generated to use it for
 # tests.
 REFERENCE_CONFIG_ROOT_DIRECTORY = os.path.abspath(
@@ -59,11 +58,11 @@ class TestACESConfig(unittest.TestCase):
             ACES_OCIO_CTL_DIRECTORY_ENVIRON, None)
 
         assert self.__aces_ocio_ctl_directory is not None, (
-            'Undefined "{0}" environment variable!'.format(
+            'Undefined "%s" environment variable!' % (
                 ACES_OCIO_CTL_DIRECTORY_ENVIRON))
 
         assert os.path.exists(self.__aces_ocio_ctl_directory) is True, (
-            '"{0}" directory does not exists!'.format(
+            '"%s" directory does not exists!' % (
                 self.__aces_ocio_ctl_directory))
 
         self.maxDiff = None
