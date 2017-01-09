@@ -408,12 +408,12 @@ colorspaces:
     to_reference: !<FileTransform> {src: V3_LogC_800_to_linear.spi1d, interpolation: linear}
 
   - !<ColorSpace>
-    name: Input - ARRI - Linear - ARRI Wide Gamut
+    name: Input - ARRI - Linear - ALEXA Wide Gamut
     family: Input/ARRI
     equalitygroup: ""
     bitdepth: 32f
     description: |
-      Linear - ARRI Wide Gamut
+      Linear - ALEXA Wide Gamut
     isdata: false
     allocation: lg2
     allocationvars: [-8, 5, 0.00390625]
@@ -2441,7 +2441,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ADX - ADX16, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei160_arriwide
+    name: logc3ei160_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2455,7 +2455,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - V3 LogC (EI160) - Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei200_arriwide
+    name: logc3ei200_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2469,7 +2469,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - V3 LogC (EI200) - Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei250_arriwide
+    name: logc3ei250_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2483,7 +2483,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - V3 LogC (EI250) - Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei320_arriwide
+    name: logc3ei320_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2497,7 +2497,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - V3 LogC (EI320) - Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei400_arriwide
+    name: logc3ei400_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2511,7 +2511,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - V3 LogC (EI400) - Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei500_arriwide
+    name: logc3ei500_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2525,7 +2525,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - V3 LogC (EI500) - Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei640_arriwide
+    name: logc3ei640_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2539,7 +2539,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - V3 LogC (EI640) - Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei800_arriwide
+    name: logc3ei800_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2553,7 +2553,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - V3 LogC (EI800) - Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei1000_arriwide
+    name: logc3ei1000_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2567,7 +2567,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - V3 LogC (EI1000) - Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei1280_arriwide
+    name: logc3ei1280_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2581,7 +2581,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - V3 LogC (EI1280) - Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei1600_arriwide
+    name: logc3ei1600_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2595,7 +2595,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - V3 LogC (EI1600) - Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei2000_arriwide
+    name: logc3ei2000_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2609,7 +2609,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - V3 LogC (EI2000) - Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei2560_arriwide
+    name: logc3ei2560_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2623,7 +2623,7 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - V3 LogC (EI2560) - Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: logc3ei3200_arriwide
+    name: logc3ei3200_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
@@ -2649,16 +2649,16 @@ colorspaces:
     to_reference: !<ColorSpaceTransform> {src: Input - ARRI - Curve - V3 LogC (EI800), dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
-    name: lin_arriwide
+    name: lin_alexawide
     family: Utility/Aliases
     equalitygroup: ""
     bitdepth: 32f
     description: |
-      Linear - ARRI Wide Gamut
+      Linear - ALEXA Wide Gamut
     isdata: false
     allocation: lg2
     allocationvars: [-8, 5, 0.00390625]
-    to_reference: !<ColorSpaceTransform> {src: Input - ARRI - Linear - ARRI Wide Gamut, dst: ACES - ACES2065-1}
+    to_reference: !<ColorSpaceTransform> {src: Input - ARRI - Linear - ALEXA Wide Gamut, dst: ACES - ACES2065-1}
 
   - !<ColorSpace>
     name: canonlog_rec709day

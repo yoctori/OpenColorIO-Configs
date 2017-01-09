@@ -208,7 +208,7 @@ def create_colorspaces(lut_directory, lut_resolution_1d):
             EI,
             lut_directory,
             lut_resolution_1d,
-            ['%sei%s_%s' % ('logc3', str(EI), 'arriwide')])
+            ['%sei%s_%s' % ('logc3', str(EI), 'alexawide')])
         colorspaces.append(log_c_EI_full)
 
     # Linearization Only
@@ -229,7 +229,7 @@ def create_colorspaces(lut_directory, lut_resolution_1d):
         default_EI,
         lut_directory,
         lut_resolution_1d,
-        ['%s_%s' % ('lin', 'arriwide')])
+        ['%s_%s' % ('lin', 'alexawide')])
     colorspaces.append(log_c_EI_primaries)
 
     return colorspaces
