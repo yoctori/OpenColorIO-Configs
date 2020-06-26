@@ -1,5 +1,6 @@
-ACES 1.2 OpenColorIO configuration
+ACES 1.2 OpenColorIO configuration (GM VWG)
 =
+This is a modified version of the ACES 1.2 config to add non-ACES view transforms for the [Gamut Mapping Virtual Working Group](https://community.acescentral.com/t/super-repository-for-virtual-working-group-development-effort/2918/4?u=nick)
 
 Information about ACES
 -
@@ -45,31 +46,37 @@ The generated transforms are based on the [ACES CTL Transforms](https://github.c
 ### Output
 
 ##### Colorspaces
-
-- DCDM
-- DCDM (P3D60 Limited)
-- DCDM (P3D65 Limited)
-- P3-D60
-- P3-D65 ST2084 (1000 nits)
-- P3-D65 ST2084 (2000 nits)
-- P3-D65 ST2084 (4000 nits)
-- P3-DCI (D60 simulation)
-- P3-DCI (D65 simulation)
-- P3D65
-- P3D65 (D60 simulation)
-- P3D65 (Rec.709 Limited)
-- P3D65 ST2084 (108 nits)
-- Rec.2020
-- Rec.2020 (P3D65 Limited)
-- Rec.2020 (Rec.709 Limited)
-- Rec.2020 HLG (1000 nits)
-- Rec.2020 ST2084 (1000 nits)
-- Rec.2020 ST2084 (2000 nits)
-- Rec.2020 ST2084 (4000 nits)
-- Rec.709
-- Rec.709 (D60 sim.)
-- sRGB
-- sRGB (D60 sim.)
+- ACES VWG GM:
+  - ACES (Rec.709)
+  - ARRI ALF-2 (Rec.709)
+  - ARRI K1S1 (Rec.709)
+  - RED IPP2 (Rec.709)
+  - FilmLight TCAM (Rec.709)
+- ACES:
+  - DCDM
+  - DCDM (P3D60 Limited)
+  - DCDM (P3D65 Limited)
+  - P3-D60
+  - P3-D65 ST2084 (1000 nits)
+  - P3-D65 ST2084 (2000 nits)
+  - P3-D65 ST2084 (4000 nits)
+  - P3-DCI (D60 simulation)
+  - P3-DCI (D65 simulation)
+  - P3D65
+  - P3D65 (D60 simulation)
+  - P3D65 (Rec.709 Limited)
+  - P3D65 ST2084 (108 nits)
+  - Rec.2020
+  - Rec.2020 (P3D65 Limited)
+  - Rec.2020 (Rec.709 Limited)
+  - Rec.2020 HLG (1000 nits)
+  - Rec.2020 ST2084 (1000 nits)
+  - Rec.2020 ST2084 (2000 nits)
+  - Rec.2020 ST2084 (4000 nits)
+  - Rec.709
+  - Rec.709 (D60 sim.)
+  - sRGB
+  - sRGB (D60 sim.)
 
 
 ##### Description
@@ -170,6 +177,10 @@ Colorspaces and transforms representing the ACES ADX spaces used for film scanni
 - Conversations with David Newman of GoPro
 
 
+#### FilmLight
+- T-Log / E-Gamut color space added to facilitate use of the T-Cam display transform
+- [E-Gamut colour space](https://github.com/colour-science/colour/blob/develop/colour/models/rgb/datasets/filmlight_egamut.py)
+
 ### Utility
 
 ##### Description
@@ -248,34 +259,41 @@ Additionally, a number of colorspaces that are gaining wider adoption have been 
 Displays and Views
 -
 
-The default config has one Display named **ACES**, which contains the following Views / colorspaces:
+The default config has one Display named **ACES VWG GM**, and one named **ACES**, which contain the following Views / colorspaces:
 
-- DCDM P3D60 Limited, colorspace: Output - DCDM (P3D60 Limited)
-- DCDM P3D65 Limited, colorspace: Output - DCDM (P3D65 Limited)
-- DCDM, colorspace: Output - DCDM
-- P3-D60, colorspace: Output - P3-D60
-- P3-D65 ST2084 1000 nits, colorspace: Output - P3-D65 ST2084 (1000 nits)
-- P3-D65 ST2084 2000 nits, colorspace: Output - P3-D65 ST2084 (2000 nits)
-- P3-D65 ST2084 4000 nits, colorspace: Output - P3-D65 ST2084 (4000 nits)
-- P3-DCI D60 simulation, colorspace: Output - P3-DCI (D60 simulation)
-- P3-DCI D65 simulation, colorspace: Output - P3-DCI (D65 simulation)
-- P3D65 D60 simulation, colorspace: Output - P3D65 (D60 simulation)
-- P3D65 Rec.709 Limited, colorspace: Output - P3D65 (Rec.709 Limited)
-- P3D65 ST2084 108 nits, colorspace: Output - P3D65 ST2084 (108 nits)
-- P3D65, colorspace: Output - P3D65
-- Rec.2020 HLG 1000 nits, colorspace: Output - Rec.2020 HLG (1000 nits)
-- Rec.2020 P3D65 Limited, colorspace: Output - Rec.2020 (P3D65 Limited)
-- Rec.2020 Rec.709 Limited, colorspace: Output - Rec.2020 (Rec.709 Limited)
-- Rec.2020 ST2084 1000 nits, colorspace: Output - Rec.2020 ST2084 (1000 nits)
-- Rec.2020 ST2084 2000 nits, colorspace: Output - Rec.2020 ST2084 (2000 nits)
-- Rec.2020 ST2084 4000 nits, colorspace: Output - Rec.2020 ST2084 (4000 nits)
-- Rec.2020, colorspace: Output - Rec.2020
-- Rec.709 D60 sim., colorspace: Output - Rec.709 (D60 sim.)
-- Rec.709, colorspace: Output - Rec.709
-- sRGB D60 sim., colorspace: Output - sRGB (D60 sim.)
-- sRGB, colorspace: Output - sRGB
-- Raw, colorspace: Utility - Raw
-- Log, colorspace: Input - ADX - ADX10
+- ACES VWG GM:
+  - ACES (Rec.709), colorspace: Output - ACES - Rec.709 - ACES GM VWG
+  - ARRI ALF-2 (Rec.709), colorspace: Output - ARRI ALF-2 - Rec.709 - ACES GM VWG
+  - ARRI K1S1 (Rec.709), colorspace: Output - ARRI K1S1 - Rec.709 - ACES GM VWG
+  - RED IPP2 (Rec.709), colorspace: Output - RED IPP2 - Rec.709 - ACES GM VWG
+  - FilmLight TCAM (Rec.709), colorspace: Output - Filmlight TCAM - Rec.709 - ACES GM VWG
+- ACES:
+  - DCDM P3D60 Limited, colorspace: Output - DCDM (P3D60 Limited)
+  - DCDM P3D65 Limited, colorspace: Output - DCDM (P3D65 Limited)
+  - DCDM, colorspace: Output - DCDM
+  - P3-D60, colorspace: Output - P3-D60
+  - P3-D65 ST2084 1000 nits, colorspace: Output - P3-D65 ST2084 (1000 nits)
+  - P3-D65 ST2084 2000 nits, colorspace: Output - P3-D65 ST2084 (2000 nits)
+  - P3-D65 ST2084 4000 nits, colorspace: Output - P3-D65 ST2084 (4000 nits)
+  - P3-DCI D60 simulation, colorspace: Output - P3-DCI (D60 simulation)
+  - P3-DCI D65 simulation, colorspace: Output - P3-DCI (D65 simulation)
+  - P3D65 D60 simulation, colorspace: Output - P3D65 (D60 simulation)
+  - P3D65 Rec.709 Limited, colorspace: Output - P3D65 (Rec.709 Limited)
+  - P3D65 ST2084 108 nits, colorspace: Output - P3D65 ST2084 (108 nits)
+  - P3D65, colorspace: Output - P3D65
+  - Rec.2020 HLG 1000 nits, colorspace: Output - Rec.2020 HLG (1000 nits)
+  - Rec.2020 P3D65 Limited, colorspace: Output - Rec.2020 (P3D65 Limited)
+  - Rec.2020 Rec.709 Limited, colorspace: Output - Rec.2020 (Rec.709 Limited)
+  - Rec.2020 ST2084 1000 nits, colorspace: Output - Rec.2020 ST2084 (1000 nits)
+  - Rec.2020 ST2084 2000 nits, colorspace: Output - Rec.2020 ST2084 (2000 nits)
+  - Rec.2020 ST2084 4000 nits, colorspace: Output - Rec.2020 ST2084 (4000 nits)
+  - Rec.2020, colorspace: Output - Rec.2020
+  - Rec.709 D60 sim., colorspace: Output - Rec.709 (D60 sim.)
+  - Rec.709, colorspace: Output - Rec.709
+  - sRGB D60 sim., colorspace: Output - sRGB (D60 sim.)
+  - sRGB, colorspace: Output - sRGB
+  - Raw, colorspace: Utility - Raw
+  - Log, colorspace: Input - ADX - ADX10
 
 Considerations for custom config generation:
 
@@ -376,6 +394,7 @@ The script used to generate these transforms and the transforms themselves were 
 - Graeme Nattress
 - David Newman
 - Sam Richards
+- Daniele Siragusano
 - Erik Strauss
 - Doug Walker
 - Kevin Wheatley
@@ -392,3 +411,8 @@ The current maintainers are:
 
 - Thomas Mansencal
 - Michael Parsons
+
+Gamut Mapping VWG modifications by:
+
+- Thomas Mansencal
+- Nick Shaw
