@@ -1,6 +1,6 @@
 ACES 1.2 OpenColorIO configuration (GM VWG)
 =
-This is a modified version of the ACES 1.2 config to add non-ACES view transforms for the [Gamut Mapping Virtual Working Group](https://community.acescentral.com/t/super-repository-for-virtual-working-group-development-effort/2918/4?u=nick)
+This is a modified version of the ACES 1.2 config to add non-ACES view transforms for the [Gamut Mapping Virtual Working Group](https://community.acescentral.com/t/super-repository-for-virtual-working-group-development-effort/).
 
 Information about ACES
 -
