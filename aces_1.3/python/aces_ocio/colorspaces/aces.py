@@ -85,7 +85,7 @@ def create_ACES():
     aces2065_1.aliases = ['lin_ap0', 'aces']
     aces2065_1.family = 'ACES'
     aces2065_1.is_data = False
-    aces2065_1.allocation_type = ocio.Constants.ALLOCATION_LG2
+    aces2065_1.allocation_type = ocio.ALLOCATION_LG2
     aces2065_1.allocation_vars = [-8, 5, 0.00390625]
 
     return aces2065_1
@@ -133,7 +133,7 @@ def create_ACEScc(aces_ctl_directory,
     cs.equality_group = ''
     cs.family = 'ACES'
     cs.is_data = False
-    cs.allocation_type = ocio.Constants.ALLOCATION_UNIFORM
+    cs.allocation_type = ocio.ALLOCATION_UNIFORM
     cs.allocation_vars = [min_value, max_value]
     cs.aces_transform_id = 'ACEScsc.Academy.ACEScc_to_ACES'
 
@@ -219,7 +219,7 @@ def create_ACEScct(aces_ctl_directory,
     cs.equality_group = ''
     cs.family = 'ACES'
     cs.is_data = False
-    cs.allocation_type = ocio.Constants.ALLOCATION_UNIFORM
+    cs.allocation_type = ocio.ALLOCATION_UNIFORM
     cs.allocation_vars = [min_value, max_value]
     cs.aces_transform_id = 'ACEScsc.Academy.ACEScct_to_ACES'
 
@@ -372,7 +372,7 @@ def create_ACEScg():
     cs.equality_group = ''
     cs.family = 'ACES'
     cs.is_data = False
-    cs.allocation_type = ocio.Constants.ALLOCATION_LG2
+    cs.allocation_type = ocio.ALLOCATION_LG2
     cs.allocation_vars = [-8, 5, 0.00390625]
 
     cs.aces_transform_id = 'ACEScsc.Academy.ACEScg_to_ACES'
@@ -437,7 +437,7 @@ def create_ADX(lut_directory, bit_depth=10, name='ADX'):
     if bit_depth == 10:
         cs.aces_transform_id = 'ACEScsc.Academy.ADX10_to_ACES'
 
-        cs.bit_depth = ocio.Constants.BIT_DEPTH_UINT10
+        cs.bit_depth = ocio.BIT_DEPTH_UINT10
         ADX_to_CDD = [
             1023 / 500, 0, 0, 0, 0, 1023 / 500, 0, 0, 0, 0, 1023 / 500, 0, 0,
             0, 0, 1
@@ -446,7 +446,7 @@ def create_ADX(lut_directory, bit_depth=10, name='ADX'):
     elif bit_depth == 16:
         cs.aces_transform_id = 'ACEScsc.Academy.ADX16_to_ACES'
 
-        cs.bit_depth = ocio.Constants.BIT_DEPTH_UINT16
+        cs.bit_depth = ocio.BIT_DEPTH_UINT16
         ADX_to_CDD = [
             65535 / 8000, 0, 0, 0, 0, 65535 / 8000, 0, 0, 0, 0, 65535 / 8000,
             0, 0, 0, 0, 1
@@ -1205,7 +1205,7 @@ def create_blue_light_artifact_fix_LMT(lmt_name, lmt_values, aliases=None):
     cs.equality_group = ''
     cs.family = 'Utility/Look'
     cs.is_data = False
-    cs.allocation_type = ocio.Constants.ALLOCATION_LG2
+    cs.allocation_type = ocio.ALLOCATION_LG2
     cs.allocation_vars = [-8, 5, 0.00390625]
     cs.aces_transform_id = lmt_values['transformID']
 
@@ -1277,7 +1277,7 @@ def create_LMT(lmt_name,
     cs.equality_group = ''
     cs.family = 'Utility/Look'
     cs.is_data = False
-    cs.allocation_type = ocio.Constants.ALLOCATION_LG2
+    cs.allocation_type = ocio.ALLOCATION_LG2
     cs.allocation_vars = [-8, 5, 0.00390625]
     cs.aces_transform_id = lmt_values['transformID']
 
@@ -1764,9 +1764,9 @@ def get_transform_info(ctl_transform):
 
     # Retrieving the *transform ID* and *User Name*.
     transform_id = lines[1][3:].split('<')[1].split('>')[1].strip()
-    transform_user_name = '-'.join(
+            transform_user_name = '-'.join(
         lines[2][3:].split('<')[1].split('>')[1].split('-')[1:]).strip()
-    transform_user_name_prefix = (
+            transform_user_name_prefix = (
         lines[2][3:].split('<')[1].split('>')[1].split('-')[0].strip())
 
     # Figuring out if this transform has options for processing *full* and

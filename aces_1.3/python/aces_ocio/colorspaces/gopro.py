@@ -72,7 +72,7 @@ def create_Protune(gamut, transfer_function, lut_directory, lut_resolution_1D,
 
     # A linear space needs allocation variables.
     if transfer_function == '':
-        cs.allocation_type = ocio.Constants.ALLOCATION_LG2
+        cs.allocation_type = ocio.ALLOCATION_LG2
         cs.allocation_vars = [-8, 5, 0.00390625]
 
     def Protune_to_linear(normalized_code_value):

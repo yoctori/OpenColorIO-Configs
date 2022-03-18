@@ -41,13 +41,13 @@ class ColorSpace(object):
                  name,
                  aliases=None,
                  description=None,
-                 bit_depth=ocio.Constants.BIT_DEPTH_F32,
+                 bit_depth=ocio.BIT_DEPTH_F32,
                  equality_group='',
                  family=None,
                  is_data=False,
                  to_reference_transforms=None,
                  from_reference_transforms=None,
-                 allocation_type=ocio.Constants.ALLOCATION_UNIFORM,
+                 allocation_type=ocio.ALLOCATION_UNIFORM,
                  allocation_vars=None,
                  aces_transform_id=None):
         """

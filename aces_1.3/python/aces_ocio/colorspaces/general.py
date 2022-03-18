@@ -85,7 +85,7 @@ def create_matrix_colorspace(name='matrix',
     cs.is_data = False
 
     # A linear space needs allocation variables.
-    cs.allocation_type = ocio.Constants.ALLOCATION_LG2
+    cs.allocation_type = ocio.ALLOCATION_LG2
     cs.allocation_vars = [-8, 5, 0.00390625]
 
     cs.to_reference_transforms = []
@@ -158,7 +158,7 @@ def create_transfer_colorspace(name='transfer',
     cs.family = 'Utility'
     cs.is_data = False
 
-    cs.allocation_type = ocio.Constants.ALLOCATION_UNIFORM
+    cs.allocation_type = ocio.ALLOCATION_UNIFORM
     cs.allocation_vars = [0, 1]
 
     # Sampling the transfer function.
@@ -247,7 +247,7 @@ def create_matrix_plus_transfer_colorspace(
     cs.is_data = False
 
     # A linear space needs allocation variables.
-    cs.allocation_type = ocio.Constants.ALLOCATION_UNIFORM
+    cs.allocation_type = ocio.ALLOCATION_UNIFORM
     cs.allocation_vars = [0, 1]
 
     # Sampling the transfer function.
@@ -336,7 +336,7 @@ def create_gamma_colorspace(name='gamma', gamma_value=1.0, aliases=None):
     cs.is_data = False
 
     # A linear space needs allocation variables.
-    cs.allocation_type = ocio.Constants.ALLOCATION_UNIFORM
+    cs.allocation_type = ocio.ALLOCATION_UNIFORM
     cs.allocation_vars = [0, 1]
 
     # Creating the *to_reference* transforms.
@@ -403,7 +403,7 @@ def create_matrix_plus_gamma_colorspace(name='matrix_plus_gamma',
     cs.family = 'Utility'
     cs.is_data = False
 
-    cs.allocation_type = ocio.Constants.ALLOCATION_UNIFORM
+    cs.allocation_type = ocio.ALLOCATION_UNIFORM
     cs.allocation_vars = [0, 1]
 
     # Creating the *to_reference* transforms.

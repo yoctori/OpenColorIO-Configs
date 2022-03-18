@@ -99,21 +99,21 @@ def set_config_roles(config,
     """
 
     if color_picking is not None:
-        config.setRole(ocio.Constants.ROLE_COLOR_PICKING, color_picking)
+        config.setRole(ocio.ROLE_COLOR_PICKING, color_picking)
     if color_timing is not None:
-        config.setRole(ocio.Constants.ROLE_COLOR_TIMING, color_timing)
+        config.setRole(ocio.ROLE_COLOR_TIMING, color_timing)
     if compositing_log is not None:
-        config.setRole(ocio.Constants.ROLE_COMPOSITING_LOG, compositing_log)
+        config.setRole(ocio.ROLE_COMPOSITING_LOG, compositing_log)
     if data is not None:
-        config.setRole(ocio.Constants.ROLE_DATA, data)
+        config.setRole(ocio.ROLE_DATA, data)
     if default is not None:
-        config.setRole(ocio.Constants.ROLE_DEFAULT, default)
+        config.setRole(ocio.ROLE_DEFAULT, default)
     if matte_paint is not None:
-        config.setRole(ocio.Constants.ROLE_MATTE_PAINT, matte_paint)
+        config.setRole(ocio.ROLE_MATTE_PAINT, matte_paint)
     if reference is not None:
-        config.setRole(ocio.Constants.ROLE_REFERENCE, reference)
+        config.setRole(ocio.ROLE_REFERENCE, reference)
     if texture_paint is not None:
-        config.setRole(ocio.Constants.ROLE_TEXTURE_PAINT, texture_paint)
+        config.setRole(ocio.ROLE_TEXTURE_PAINT, texture_paint)
 
     # *rendering* and *compositing_linear* roles default to the *scene_linear*
     # value if not set explicitly.
@@ -122,7 +122,7 @@ def set_config_roles(config,
     if compositing_linear is not None:
         config.setRole('compositing_linear', compositing_linear)
     if scene_linear is not None:
-        config.setRole(ocio.Constants.ROLE_SCENE_LINEAR, scene_linear)
+        config.setRole(ocio.ROLE_SCENE_LINEAR, scene_linear)
         if rendering is None:
             config.setRole('rendering', scene_linear)
         if compositing_linear is None:
@@ -148,8 +148,8 @@ def create_ocio_transform(transforms):
     """
 
     direction_options = {
-        'forward': ocio.Constants.TRANSFORM_DIR_FORWARD,
-        'inverse': ocio.Constants.TRANSFORM_DIR_INVERSE
+        'forward': ocio.TRANSFORM_DIR_FORWARD,
+        'inverse': ocio.TRANSFORM_DIR_INVERSE
     }
 
     ocio_transforms = []
@@ -167,9 +167,10 @@ def create_ocio_transform(transforms):
                 ocio_transform.setCCCId(transform['cccid'])
 
             if 'interpolation' in transform:
-                ocio_transform.setInterpolation(transform['interpolation'])
+                interpolation = ocio.InterpolationFromString(transform['interpolation'])
+                ocio_transform.setInterpolation(interpolation)
             else:
-                ocio_transform.setInterpolation(ocio.Constants.INTERP_BEST)
+                ocio_transform.setInterpolation(ocio.INTERP_BEST)
 
             if 'direction' in transform:
                 ocio_transform.setDirection(
@@ -257,7 +258,7 @@ def create_ocio_transform(transforms):
     if len(ocio_transforms) > 1:
         group_transform = ocio.GroupTransform()
         for transform in ocio_transforms:
-            group_transform.push_back(transform)
+            group_transform.appendTransform(transform)
         transform = group_transform
     else:
         transform = ocio_transforms[0]
@@ -332,7 +333,7 @@ def add_colorspace_aliases(config,
                 'forward'
             }])
             ocio_colorspace_alias.setTransform(
-                ocio_transform, ocio.Constants.COLORSPACE_DIR_TO_REFERENCE)
+                ocio_transform, ocio.COLORSPACE_DIR_TO_REFERENCE)
 
         if colorspace.from_reference_transforms:
             print('\tGenerating From-Reference transforms')
@@ -347,7 +348,7 @@ def add_colorspace_aliases(config,
                 'forward'
             }])
             ocio_colorspace_alias.setTransform(
-                ocio_transform, ocio.Constants.COLORSPACE_DIR_FROM_REFERENCE)
+                ocio_transform, ocio.COLORSPACE_DIR_FROM_REFERENCE)
 
         config.addColorSpace(ocio_colorspace_alias)
 
@@ -787,14 +788,14 @@ def create_config(config_data,
             ocio_transform = create_ocio_transform(
                 colorspace.to_reference_transforms)
             ocio_colorspace.setTransform(
-                ocio_transform, ocio.Constants.COLORSPACE_DIR_TO_REFERENCE)
+                ocio_transform, ocio.COLORSPACE_DIR_TO_REFERENCE)
 
         if colorspace.from_reference_transforms:
             print('\tGenerating From-Reference transforms')
             ocio_transform = create_ocio_transform(
                 colorspace.from_reference_transforms)
             ocio_colorspace.setTransform(
-                ocio_transform, ocio.Constants.COLORSPACE_DIR_FROM_REFERENCE)
+                ocio_transform, ocio.COLORSPACE_DIR_FROM_REFERENCE)
 
         config.addColorSpace(ocio_colorspace)
 
@@ -945,18 +946,18 @@ def create_config(config_data,
         # is written to disk.
         for display, view_list in config_data['displays'].items():
             for view_name, colorspace in view_list.items():
-                config.addDisplay(display, view_name, colorspace.name, looks)
+                config.addDisplayView(display, view_name, colorspace.name, looks)
                 if 'Output Transform' in view_name and looks != '':
                     # *Views* without *Looks*.
-                    config.addDisplay(display, view_name, colorspace.name)
+                    config.addDisplayView(display, view_name, colorspace.name)
 
                     # *Views* with *Looks*.
                     view_name_with_looks = '{0} with {1}'.format(
                         view_name, looks)
-                    config.addDisplay(display, view_name_with_looks,
+                    config.addDisplayView(display, view_name_with_looks,
                                       colorspace.name, looks)
                 else:
-                    config.addDisplay(display, view_name, colorspace.name)
+                    config.addDisplayView(display, view_name, colorspace.name)
                 if not (view_name in views):
                     views.append(view_name)
             displays.append(display)
@@ -1005,7 +1006,7 @@ def create_config(config_data,
                                 colorspace.name
                             ])
                         else:
-                            config.addDisplay(single_display_name,
+                            config.addDisplayView(single_display_name,
                                               sanitised_display,
                                               colorspace.name)
 
@@ -1014,7 +1015,7 @@ def create_config(config_data,
 
                     # *View* without *Looks*.
                     else:
-                        config.addDisplay(single_display_name,
+                        config.addDisplayView(single_display_name,
                                           sanitised_display, colorspace.name)
 
                         if not (sanitised_display in views):
@@ -1028,7 +1029,7 @@ def create_config(config_data,
             single_display_name, sanitised_display, colorspace_name = (
                 display_view_colorspace)
 
-            config.addDisplay(single_display_name, sanitised_display,
+            config.addDisplayView(single_display_name, sanitised_display,
                               colorspace_name)
 
             if not (sanitised_display in views):
@@ -1041,9 +1042,9 @@ def create_config(config_data,
             raw_display_space_name = prefixed_names[raw_display_space_name]
             log_display_space_name = prefixed_names[log_display_space_name]
 
-        config.addDisplay(single_display_name, 'Raw', raw_display_space_name)
+        config.addDisplayView(single_display_name, 'Raw', raw_display_space_name)
         views.append('Raw')
-        config.addDisplay(single_display_name, 'Log', log_display_space_name)
+        config.addDisplayView(single_display_name, 'Log', log_display_space_name)
         views.append('Log')
 
     config.setActiveDisplays(','.join(sorted(displays)))
@@ -1052,7 +1053,7 @@ def create_config(config_data,
     print('\n')
 
     # Ensuring the configuration is valid.
-    config.sanityCheck()
+    config.validate()
 
     # Resetting colorspace names to their non-prefixed versions.
     if prefix:
