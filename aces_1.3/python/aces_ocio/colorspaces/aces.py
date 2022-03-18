@@ -1763,11 +1763,22 @@ def get_transform_info(ctl_transform):
         lines = fp.readlines()
 
     # Retrieving the *transform ID* and *User Name*.
-    transform_id = lines[1][3:].split('<')[1].split('>')[1].strip()
+    transform_id = None
+    transform_user_name = None
+    transform_user_name_prefix = None
+
+    for line in lines:
+        if transform_id is None and '</ACEStransformID>' in line:
+            transform_id = line[3:].split('<')[1].split('>')[1].strip()
+
+        if transform_user_name is None and '</ACESuserName>' in line:
             transform_user_name = '-'.join(
-        lines[2][3:].split('<')[1].split('>')[1].split('-')[1:]).strip()
+                line[3:].split('<')[1].split('>')[1].split('-')[1:]).strip()
             transform_user_name_prefix = (
-        lines[2][3:].split('<')[1].split('>')[1].split('-')[0].strip())
+                line[3:].split('<')[1].split('>')[1].split('-')[0].strip())
+
+        if transform_id and transform_user_name:
+            break
 
     # Figuring out if this transform has options for processing *full* and
     # *legal* ranges and whether in the case of an output transform it is
