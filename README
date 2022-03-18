@@ -11,6 +11,13 @@ Copyright for the code and artifacts in the "aces_0.1.1", "aces_0.7.1",
 Sony Pictures Imageworks.
 
 Copyright for the code and artifacts in the "aces_1.0.1", "aces_1.0.2",
-"aces_1.0.3", "aces_1.1" and "aces_1.2" directories are held by the
+"aces_1.0.3", "aces_1.1", "aces_1.2" and "aces_1.3" directories are held by the
 Academy of Motion Picture Arts and Sciences and are licensed under the
 License Terms for Academy Color Encoding System Components.
+
+About This Fork
+---------
+Make scripts OpenColorIO 2 APIs compatible.
+All LUTs were generated using default parameters with
+- OpenImageIO v2.3.13.0
+- OpenColorIO v2.1.1
