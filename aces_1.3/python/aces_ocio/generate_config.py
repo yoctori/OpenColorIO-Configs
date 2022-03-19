@@ -1558,7 +1558,7 @@ def generate_config(aces_ctl_directory,
                                         'LMT')
     odt_info = aces.get_transforms_info(aces_ctl_directory, 'odt', True, 'ODT')
     ssts_ot_info = aces.get_transforms_info(
-        aces_ctl_directory, 'outputTransforms', False, 'RRTODT')
+        aces_ctl_directory, 'outputTransform', False, 'RRTODT')
 
     if shaper_base_name == 'DolbyPQ':
         shaper_name = 'Dolby PQ 48 nits Shaper'
